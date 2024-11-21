@@ -7,10 +7,10 @@ if (isset($_POST['entrar'])) {
             echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
             exit;
         } else {
-            echo 'Usuario o contraseña incorrectos.';
+            echo '<p>Usuario o contraseña incorrectos.</p>';
         }
     } else {
-        echo "No hay datos registrados. Por favor, <a href='sesionesacceso.php'>regístrate aquí</a>.";
+        echo "<p>No hay datos registrados. Por favor, <a href='sesionesacceso.php'>regístrate aquí</a>.</p>";
     }
 }
 ?>
@@ -22,6 +22,9 @@ if (isset($_POST['entrar'])) {
     <title>Inicio De Sesion</title>
     <style>
         div{
+            text-align: center;
+        }
+        p{
             text-align: center;
         }
     </style>

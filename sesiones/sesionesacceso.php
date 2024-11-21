@@ -8,13 +8,13 @@ if (isset($_POST['submit'])) {
             $_SESSION['contrasenia'] = $_POST['contrasenia'];
             $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : 'Estandar';
 
-            echo "Registro con exito. Ahora puedes <a href='sesiones1full.php'>iniciar sesión</a>.";
+            echo "<p>Registro con exito. Ahora puedes <a href='sesiones1full.php'>iniciar sesión</a>.</p>";
             exit;
         } else {
-            echo "Las contraseñas no coinciden.";
+            echo "<p>Las contraseñas no coinciden.</p>";
         }
     } else {
-        echo "Todos los campos son obligatorios.";
+        echo "<p>Todos los campos son obligatorios.</p>";
     }
 }
 ?>
@@ -26,7 +26,10 @@ if (isset($_POST['submit'])) {
     <title>Registro</title>
     <style>
         div{
-            text-align: center; 
+            text-align: center;
+        }
+        p{
+            text-align: center;
         }
     </style>
 </head>
