@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario con Botones Seleccionables</title>
+</head>
+<body>
+
+    <h1>Dime tu edad:</h1>
+    <form action="Ejercicio2Unidad4.php" method="post">
+
+        <fieldset>
+            <legend>Selecciona tu edad:</legend>
+            <label>
+                <input type="radio" name="edad" value="menor14"> Menos de 14 años
+            </label><br>
+            <label>
+                <input type="radio" name="edad" value="menor20"> de 15 a 20 años
+            </label><br>
+            <label>
+                <input type="radio" name="edad" value="menor40"> de 21 a 40 años
+            </label><br>
+            <label>
+                <input type="radio" name="edad" value="menor60"> de 41 a 60 años
+            </label><br>
+            <label>
+                <input type="radio" name="edad" value="mas60"> más de 60 años.
+            </label>
+        </fieldset>
+        <br>
+        <input type="submit" value="resultado">
+    </form>
+
+</body>
+</html>

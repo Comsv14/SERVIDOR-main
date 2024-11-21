@@ -1,0 +1,2 @@
+contador con una caja de - el numero y otra caja de +(aparece con 0)
+y un boton de cerrar sesion_destroy()
