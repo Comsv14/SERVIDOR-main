@@ -70,7 +70,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['contrasenia'] = $_POST['contrasenia'];
             $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : 'Estandar';
 
-            echo "<p>Registro con exito. Ahora puedes: </p>";
+            echo "<p>Registro con exito.</p>";
             echo "<p><a href='sesiones1full.php'>iniciar sesión</a></p>";
             exit;
         } else {
