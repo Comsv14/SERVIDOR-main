@@ -62,7 +62,6 @@
 <?php
 session_start();
 if (isset($_POST['entrar'])) {
-    
     if (isset($_SESSION['usuario'], $_SESSION['contrasenia'])) {
         if ($_POST['usuario'] === $_SESSION['usuario'] && $_POST['contrasenia'] === $_SESSION['contrasenia']) {
             echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
