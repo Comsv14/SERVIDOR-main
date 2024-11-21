@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
             
             $_SESSION['usuario'] = $_POST['usuario'];
             $_SESSION['contrasenia'] = $_POST['contrasenia'];
-            $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : '';
+            $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : 'Estandar';
 
             echo "<p>Registro con exito. Ahora puedes <a href='sesiones1full.php'>iniciar sesión</a>.</p>";
             exit;
