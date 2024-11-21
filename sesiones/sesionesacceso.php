@@ -65,7 +65,6 @@ session_start();
 if (isset($_POST['submit'])) {
     if (!empty($_POST['usuario']) && !empty($_POST['contrasenia']) && !empty($_POST['contraseniaC'])) {
         if ($_POST['contrasenia'] === $_POST['contraseniaC']) {
-            
             $_SESSION['usuario'] = $_POST['usuario'];
             $_SESSION['contrasenia'] = $_POST['contrasenia'];
             $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : 'Estandar';
