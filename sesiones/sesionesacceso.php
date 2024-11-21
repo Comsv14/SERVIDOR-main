@@ -24,8 +24,14 @@ if (isset($_POST['submit'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro</title>
+    <style>
+        div{
+            text-align: center; 
+        }
+    </style>
 </head>
 <body>
+    <div>
     <h1>Registro</h1>
     <form action="sesionesacceso.php" method="post">
         <label>Usuario:</label>
@@ -43,5 +49,6 @@ if (isset($_POST['submit'])) {
         <br>
         <button type="submit" name="submit">Registrar</button>
     </form>
+    </div>
 </body>
 </html>

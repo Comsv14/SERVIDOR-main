@@ -4,7 +4,7 @@ if (isset($_POST['entrar'])) {
     
     if (isset($_SESSION['usuario'], $_SESSION['contrasenia'])) {
         if ($_POST['usuario'] === $_SESSION['usuario'] && $_POST['contrasenia'] === $_SESSION['contrasenia']) {
-            echo "Usuario: ". $_SESSION['usuario'] ."</br>"."Plan: " . $_SESSION['plan'];
+            echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
             exit;
         } else {
             echo "Usuario o contraseña incorrectos.";
@@ -20,8 +20,14 @@ if (isset($_POST['entrar'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio De Sesion</title>
+    <style>
+        div{
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <div>
     <h1>Iniciar Sesion</h1>
     <form action="sesiones1full.php" method="post">
         <label>Usuario:</label>
@@ -33,8 +39,8 @@ if (isset($_POST['entrar'])) {
         <a href="sesionesacceso.php">REGISTRARME</a>
         <br>
         <button type="submit" name="entrar">Entrar</button>
-        
     </form>
+    </div>
 </body>
 </html>
 
