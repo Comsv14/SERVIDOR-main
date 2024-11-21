@@ -15,6 +15,47 @@
         p{
             text-align: center;
         }
+        h1{ 
+            text-align: center; 
+            font-family: Arial Black; 
+            font-weight: bold; 
+            font-size: 30px; 
+            color: #fff; 
+            text-shadow: 0 1px 0 #ddd, 0 2px 0 #ccc, 0 3px 0 #bbb, 0 4px 0 #aaa, 0 5px 0 #acacac, 0 6px 1px rgba(0,0,0,0.1), 0 0 5px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.3), 0 3px 5px rgba(0,0,0,0.2), 0 5px 10px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.2), 0 20px 20px rgba(0,0,0,0.15);
+        }
+        .pulse-effect {
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            cursor: pointer;
+            border-radius: 5px;
+            background-color: #007bff; 
+            transition: transform 0.3s ease-in-out; 
+        }
+
+        .pulse-effect:hover {
+            background-color: #0056b3; 
+        }
+
+        .pulse-effect:active {
+            transform: scale(0.90); 
+        }
+        a{
+            color: #20bf6b !important;
+            text-transform: uppercase;
+            background: #ffffff;
+            padding: 20px;
+            border: 4px solid #20bf6b !important;
+            border-radius: 6px;
+            display: inline-block;
+            transition: all 0.3s ease 0s;
+        }
+        a:hover {
+            color: #494949 !important;
+            border-radius: 50px;
+            border-color: #494949 !important;
+            transition: all 0.3s ease 0s;
+        }
     </style>
 </head>
 <body>
@@ -43,9 +84,9 @@ if (isset($_POST['entrar'])) {
         <label>Contraseña:</label>
         <input type="password" name="contrasenia" required>
         <br></br>
-        <a href="sesionesacceso.php">REGISTRARME</a>
+        <button type="submit" class="btn pulse-effect" name="entrar">Entrar</button>
         <br></br>
-        <button type="submit" name="entrar">Entrar</button>
+        <a href="sesionesacceso.php">REGISTRARME</a>
     </form>
     </div>
 </body>
