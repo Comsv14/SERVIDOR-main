@@ -7,7 +7,7 @@ if (isset($_POST['entrar'])) {
             echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
             exit;
         } else {
-            echo "Usuario o contraseña incorrectos.";
+            echo 'Usuario o contraseña incorrectos.';
         }
     } else {
         echo "No hay datos registrados. Por favor, <a href='sesionesacceso.php'>regístrate aquí</a>.";
