@@ -1,3 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <style>
+        div{
+            text-align: center;
+        }
+        p.err{
+            text-align: center;
+            color: red;
+        }
+        p{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
 <?php
 session_start();
 if (isset($_POST['submit'])) {
@@ -11,46 +31,33 @@ if (isset($_POST['submit'])) {
             echo "<p>Registro con exito. Ahora puedes <a href='sesiones1full.php'>iniciar sesión</a>.</p>";
             exit;
         } else {
-            echo "<p>Las contraseñas no coinciden.</p>";
+            echo "<p class='err'>Las contraseñas no coinciden.</p>";
         }
     } else {
-        echo "<p>Todos los campos son obligatorios.</p>";
+        echo "<p class='err'>Todos los campos son obligatorios.</p>";
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
-    <style>
-        div{
-            text-align: center;
-        }
-        p{
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
+
     <div>
     <h1>Registro</h1>
     <form action="sesionesacceso.php" method="post">
         <label>Usuario:</label>
         <input type="text" name="usuario" required>
-        <br>
+        <br></br>
         <label>Contraseña:</label>
         <input type="password" name="contrasenia" required>
-        <br>
+        <br></br>
         <label>Confirmar contraseña:</label>
         <input type="password" name="contraseniaC" required>
-        <br>
+        <br></br>
         <label>Plan:</label>
         <input type="radio" name="plan" value="Estandar" checked> Estandar
         <input type="radio" name="plan" value="Premium"> Premium
-        <br>
+        <br></br>
         <button type="submit" name="submit">Registrar</button>
+        <br></br>
+        <a href="sesiones1full.php">Volver</a>
     </form>
     </div>
 </body>

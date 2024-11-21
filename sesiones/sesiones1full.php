@@ -1,19 +1,3 @@
-<?php
-session_start();
-if (isset($_POST['entrar'])) {
-    
-    if (isset($_SESSION['usuario'], $_SESSION['contrasenia'])) {
-        if ($_POST['usuario'] === $_SESSION['usuario'] && $_POST['contrasenia'] === $_SESSION['contrasenia']) {
-            echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
-            exit;
-        } else {
-            echo '<p>Usuario o contraseña incorrectos.</p>';
-        }
-    } else {
-        echo "<p>No hay datos registrados. Por favor, <a href='sesionesacceso.php'>regístrate aquí</a>.</p>";
-    }
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,23 +8,44 @@ if (isset($_POST['entrar'])) {
         div{
             text-align: center;
         }
+        p.err{
+            text-align: center;
+            color: red;
+        }
         p{
             text-align: center;
         }
     </style>
 </head>
 <body>
+<?php
+session_start();
+if (isset($_POST['entrar'])) {
+    
+    if (isset($_SESSION['usuario'], $_SESSION['contrasenia'])) {
+        if ($_POST['usuario'] === $_SESSION['usuario'] && $_POST['contrasenia'] === $_SESSION['contrasenia']) {
+            echo "<p><strong>Usuario: </strong>". $_SESSION['usuario'] ."</br>"."<strong>Plan: </strong>" . $_SESSION['plan']."</p>";
+            exit;
+        } else {
+            echo '<p class="err">Usuario o contraseña incorrectos.</p>';
+        }
+    } else {
+        echo "<p>No hay datos registrados. Por favor, <a href='sesionesacceso.php'>regístrate aquí</a>.</p>";
+    }
+}
+?>
+
     <div>
     <h1>Iniciar Sesion</h1>
     <form action="sesiones1full.php" method="post">
         <label>Usuario:</label>
         <input type="text" name="usuario" required>
-        <br>
+        <br></br>
         <label>Contraseña:</label>
         <input type="password" name="contrasenia" required>
-        <br>
+        <br></br>
         <a href="sesionesacceso.php">REGISTRARME</a>
-        <br>
+        <br></br>
         <button type="submit" name="entrar">Entrar</button>
     </form>
     </div>
