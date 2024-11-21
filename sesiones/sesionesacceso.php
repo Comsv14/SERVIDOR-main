@@ -38,7 +38,6 @@ if (isset($_POST['submit'])) {
     }
 }
 ?>
-
     <div>
     <h1>Registro</h1>
     <form action="sesionesacceso.php" method="post">
