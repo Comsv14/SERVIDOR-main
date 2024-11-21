@@ -26,7 +26,7 @@ if (isset($_POST['submit'])) {
             
             $_SESSION['usuario'] = $_POST['usuario'];
             $_SESSION['contrasenia'] = $_POST['contrasenia'];
-            $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : 'Estandar';
+            $_SESSION['plan'] = isset($_POST['plan']) ? $_POST['plan'] : '';
 
             echo "<p>Registro con exito. Ahora puedes <a href='sesiones1full.php'>iniciar sesión</a>.</p>";
             exit;
@@ -52,8 +52,8 @@ if (isset($_POST['submit'])) {
         <input type="password" name="contraseniaC" required>
         <br></br>
         <label>Plan:</label>
-        <input type="radio" name="plan" value="Estandar" checked> Estandar
-        <input type="radio" name="plan" value="Premium"> Premium
+        <input type="radio" name="plan" value="Estandar" required> Estandar
+        <input type="radio" name="plan" value="Premium" required> Premium
         <br></br>
         <button type="submit" name="submit">Registrar</button>
         <br></br>
