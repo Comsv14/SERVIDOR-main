@@ -34,7 +34,6 @@ if (isset($_POST['entrar'])) {
     }
 }
 ?>
-
     <div>
     <h1>Iniciar Sesion</h1>
     <form action="sesiones1full.php" method="post">
