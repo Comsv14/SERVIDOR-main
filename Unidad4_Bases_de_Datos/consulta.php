@@ -8,8 +8,7 @@
   $result = $connection->query($query);
   if (!$result) die("Fatal Error");
   $rows = $result->num_rows;
-  for ($j = 0 ; $j < $rows ; ++$j)
-  {
+  for ($j = 0 ; $j < $rows ; ++$j) {
   $result->data_seek($j);
   $rows= $result->fetch_assoc();
   echo 'Usuario: '. htmlspecialchars($rows['usu']). '<br>';
