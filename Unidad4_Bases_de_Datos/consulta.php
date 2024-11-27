@@ -12,10 +12,10 @@ $rows = $result->num_rows;
 for ($j = 0; $j < $rows; ++$j) {
     $result->data_seek($j);
     $row = $result->fetch_assoc(); // Usar una variable diferente
-    echo 'Id: '. htmlspecialchars($row['id']) .'<br>';
-    echo 'Rol: ' . htmlspecialchars($row['rol']) . '<br>';
-    echo 'Usuario: ' . htmlspecialchars($row['usu']) . '<br>';
-    echo 'Contrasenia: ' . htmlspecialchars($row['contra']) . '<br></br>';
+    echo '<strong>Id: </strong>'. htmlspecialchars($row['id']) .'<br>';
+    echo '<strong>Rol: </strong>' . htmlspecialchars($row['rol']) . '<br>';
+    echo '<strong>Usuario: </strong>' . htmlspecialchars($row['usu']) . '<br>';
+    echo '<strong>Contraseña: </strong>' . htmlspecialchars($row['contra']) . '<br></br>';
 }
 
 $result->close();
