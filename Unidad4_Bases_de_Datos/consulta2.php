@@ -10,6 +10,5 @@
 else {
     echo 'Se ha añadido correctamente.';
 }
-$result->close();
 $connection->close();    
 ?> 
