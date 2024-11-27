@@ -19,5 +19,5 @@ for ($j = 0; $j < $rows; ++$j) {
 }
 
 $result->close();
-$connection->close();
+$connection->close();           
 ?>
