@@ -16,9 +16,6 @@ for ($j = 0; $j < $rows; ++$j) {
     echo 'Rol: ' . htmlspecialchars($row['rol']) . '<br>';
     echo 'Usuario: ' . htmlspecialchars($row['usu']) . '<br>';
     echo 'Contrasenia: ' . htmlspecialchars($row['contra']) . '<br></br>';
-    
-   
-    
 }
 
 $result->close();
