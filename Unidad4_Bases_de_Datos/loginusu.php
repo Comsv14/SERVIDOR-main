@@ -24,10 +24,7 @@ if (!empty($_POST['usu']) && !empty($_POST['contra'])) {
     } else {
         echo "Usuario o contraseña incorrectos.";
     }
-} else {
-    echo "Por favor ingresa tu usuario y contraseña.";
 }
-
 $conn->close();
 ?>
 
