@@ -95,7 +95,7 @@ if (!empty($_POST['usu']) && !empty($_POST['contra'])) {
         $row = $result->fetch_assoc(); 
         echo '<strong>Usuario: </strong>' . htmlspecialchars($row['usu']) . '. <br>';
         echo '<strong>Contraseña: </strong>' . htmlspecialchars($row['contra']) . '. <br></br>';
-        echo '<a href="consulta4.php">Volver</a>';
+        echo '<a href="iniciarsesion.php">Volver</a>';
         echo '</div>'; 
         exit;
     } else {
