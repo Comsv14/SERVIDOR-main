@@ -1,10 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "Jugador";        
-$password = "jugador";            
-$dbname = "bdsimon";      
-
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once 'login.php';    
+$conn = new mysqli($hn, $un, $pw, $db);
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
