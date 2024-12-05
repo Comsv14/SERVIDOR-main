@@ -16,6 +16,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Credenciales incorrectas. Inténtalo de nuevo.";
     }
 }
+
+//LLENAR LAS POSICIONES
+function llenar() {
+    $posicion = [1, 2, 3, 4, 5, 6];  
+    $valores = [2, 2, 3, 3, 5, 5];  
+    
+    shuffle($valores);  // Mezcla los valores aleatoriamente
+    
+    // Asigna los valores mezclados al array $posicion
+    for ($i = 0; $i < count($posicion); $i++) {
+        $posicion[$i] = $valores[$i];
+    }
+
+    return $posicion;  // Devuelve el array modificado
+}
+
+$posicion = llenar();  // Llama a la función y guarda el resultado
+$_SESSION["posiciones"]=$posicion;
 ?>
 
 <!DOCTYPE html>
