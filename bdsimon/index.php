@@ -27,7 +27,7 @@ if (isset($_POST['usu'])) {
     }
 
 }
-
+//esto es siempre igual, es el loggeo para entrar a jugar en el que luego te sale el html
 ?>
 
 <!DOCTYPE html>
