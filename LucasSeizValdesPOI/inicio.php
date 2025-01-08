@@ -20,7 +20,7 @@ session_start();
 
     <img src="20241212.jpg">
     <br></br>
-    <form action="inicio.php" method="post">
+    <form action="solucion.php" method="post">
     <p>Solución jeroglifico  <input type="text" id="solucion" name="solucion"></input></p>
     <input type="submit" value="Enviar" name="submit">
     <br></br>
@@ -28,7 +28,7 @@ session_start();
     if(isset($_POST['solucion'])){
     $solucion=$_POST['solucion'];
     $nombre=$_SESSION["nombre"];
-    $query = "INSERT INTO jugador (nombre, respuesta) VALUES ($nombre,)";
+    $query = "INSERT INTO jugador (nombre, respuesta) VALUES ($nombre, $solucion)";
 }
     ?>
     </form>
