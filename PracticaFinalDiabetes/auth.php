@@ -22,7 +22,7 @@ if ($result->num_rows > 0) {
     // Usuario autenticado
     $row = $result->fetch_assoc();
     $_SESSION['id_usu'] = $row['id_usu']; // Guardar ID de usuario en la sesión
-    header("Location: paginas/formulario.php"); // Redirigir a la página principal
+    header("Location: formularios/formulario.php"); // Redirigir a la página principal
 } else {
     // Credenciales incorrectas
     echo "Usuario o contraseña incorrectos. <a href='index.php'>Inténtalo de nuevo</a>";

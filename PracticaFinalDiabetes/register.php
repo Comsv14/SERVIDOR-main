@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Registro de Usuario</h1>
-    <form action="register_process.php" method="POST">
+    <form action="paginas/register_process.php" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
 
@@ -27,4 +27,4 @@
     </form>
 
     <br>
-    <p>¿Ya tienes una cuenta? <a href="login.php">In
+    <p>¿Ya tienes una cuenta? <a href="index.php">In
