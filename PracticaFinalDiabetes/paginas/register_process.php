@@ -9,6 +9,8 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
+$response_message = ""; // Variable para almacenar el mensaje de respuesta
+
 // Capturar los valores del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre'] ?? null;
@@ -28,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_check->store_result();
 
         if ($stmt_check->num_rows > 0) {
-            echo "El usuario ya está registrado. <a href='register.php'>Intenta con otro nombre de usuario</a>";
+            $response_message = "El usuario ya está registrado. <a href='../register.php'>Intenta con otro nombre de usuario</a>";
         } else {
             // Insertar datos en la tabla USUARIO
             $sql_insert = "INSERT INTO USUARIO (fecha_nacimiento, nombre, apellidos, usuario, contra)
@@ -37,9 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt_insert->bind_param("sssss", $fecha_nacimiento, $nombre, $apellidos, $usuario, $contra);
 
             if ($stmt_insert->execute()) {
-                echo "Registro exitoso. <a href='login.php'>Inicia sesión aquí</a>";
+                $response_message = "Registro exitoso. <a href='../index.php'>Inicia sesión aquí</a>";
             } else {
-                echo "Error: " . $stmt_insert->error;
+                $response_message = "Error: " . $stmt_insert->error;
             }
 
             $stmt_insert->close();
@@ -47,11 +49,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt_check->close();
     } else {
-        echo "Todos los campos son obligatorios.";
+        $response_message = "Todos los campos son obligatorios.";
     }
 } else {
-    echo "Método de solicitud no válido.";
+    $response_message = "Método de solicitud no válido.";
 }
 
 $conn->close();
 ?>
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <style>
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Fondo con degradado elegante */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        /* Contenedor de respuesta */
+        .response-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            text-align: center;
+            color: white;
+        }
+
+        /* Título */
+        .response-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        /* Enlaces */
+        .response-container a {
+            color: #f39c12;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .response-container a:hover {
+            color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="response-container">
+        <?php if (!empty($response_message)): ?>
+            <?php echo $response_message; ?>
+        <?php else: ?>
+            <!-- Aquí puedes mostrar el formulario de registro si lo deseas -->
+            <h2>Registro de Usuario</h2>
+            <form method="POST" action="">
+                <input type="text" name="nombre" placeholder="Nombre" required><br>
+                <input type="text" name="apellidos" placeholder="Apellidos" required><br>
+                <input type="text" name="usuario" placeholder="Usuario" required><br>
+                <input type="password" name="contra" placeholder="Contraseña" required><br>
+                <input type="date" name="fecha_nacimiento" required><br>
+                <button type="submit">Registrarse</button>
+            </form>
+        <?php endif; ?>
+    </div>
+</body>
+</html>

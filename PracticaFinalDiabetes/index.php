@@ -4,20 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <h1>Iniciar Sesión</h1>
-    <form action="auth.php" method="POST">
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form action="auth.php" method="POST">
+            <div class="input-group">
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required>
+            </div>
 
-        <label for="contra">Contraseña:</label>
-        <input type="password" id="contra" name="contra" required><br><br>
+            <div class="input-group">
+                <label for="contra">Contraseña:</label>
+                <input type="password" id="contra" name="contra" required>
+            </div>
 
-        <button type="submit">Iniciar Sesión</button>
-    </form>
+            <button class="login-btn" type="submit">Iniciar Sesión</button>
+        </form>
 
-    <br>
-    <p>¿No tienes una cuenta? <a href="register.php">Regístrate aquí</a></p>
+        <form action="register.php" method="GET">
+            <button class="register-btn" type="submit">Regístrate aquí</button>
+        </form>
+    </div>
 </body>
 </html>

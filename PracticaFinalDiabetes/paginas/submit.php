@@ -79,3 +79,86 @@ if ($conn->query($sql_usuario) === TRUE) {
 // Cerrar conexión
 $conn->close();
 ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro y Control</title>
+    <style>
+        /* Estilo global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            color: white;
+            text-align: center;
+        }
+
+        .form-container h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .form-container input, .form-container button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #f39c12;
+            color: white;
+            font-size: 16px;
+        }
+
+        .form-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-container input:focus, .form-container button:focus {
+            outline: none;
+            box-shadow: 0 0 5px #f39c12;
+        }
+
+        .form-container button {
+            background-color: #f39c12;
+            font-weight: bold;
+        }
+
+        .form-container button:hover {
+            background-color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Registro y Control de Usuario</h2>
+        <form method="POST" action="">
+            <input type="text" name="nombre" placeholder="Nombre" required><br>
+            <input type="text" name="apellidos" placeholder="Apellidos" required><br>
+            <input type="text" name="usuario" placeholder="Usuario" required><br>
+            <input type="password" name="contra" placeholder="Contraseña" required><br>
+            <input type="date" name="fecha_nacimiento" required><br>
+            <button type="submit">Registrar</button>
+        </form>
+    </div>
+</body>
+</html>

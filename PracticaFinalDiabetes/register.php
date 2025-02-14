@@ -4,27 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
+    <link rel="stylesheet" href="css/login.css">
 </head>
 <body>
-    <h1>Registro de Usuario</h1>
-    <form action="paginas/register_process.php" method="POST">
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
+    <div class="login-container">
+        <h2>Registro de Usuario</h2>
+        <form action="paginas/register_process.php" method="POST">
+            <div class="input-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required placeholder="Escribe tu nombre">
+            </div>
 
-        <label for="apellidos">Apellidos:</label>
-        <input type="text" id="apellidos" name="apellidos" required><br><br>
+            <div class="input-group">
+                <label for="apellidos">Apellidos:</label>
+                <input type="text" id="apellidos" name="apellidos" required placeholder="Escribe tus apellidos">
+            </div>
 
-        <label for="usuario">Usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
+            <div class="input-group">
+                <label for="usuario">Usuario:</label>
+                <input type="text" id="usuario" name="usuario" required placeholder="Escribe un nombre de usuario">
+            </div>
 
-        <label for="contra">Contraseña:</label>
-        <input type="password" id="contra" name="contra" required><br><br>
+            <div class="input-group">
+                <label for="contra">Contraseña:</label>
+                <input type="password" id="contra" name="contra" required placeholder="Crea una contraseña">
+            </div>
 
-        <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
-        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required><br><br>
+            <div class="input-group">
+                <label for="fecha_nacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+            </div>
 
-        <button type="submit">Registrarse</button>
-    </form>
+            <button class="login-btn" type="submit">Registrarse</button>
+        </form>
 
-    <br>
-    <p>¿Ya tienes una cuenta? <a href="index.php">In
+        <form action="index.php" method="GET">
+            <button class="register-btn" type="submit">Iniciar Sesión</button>
+        </form>
+    </div>
+</body>
+</html>
