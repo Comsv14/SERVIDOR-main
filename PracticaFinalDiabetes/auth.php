@@ -86,7 +86,7 @@ body {
             <?php 
             $row = $result->fetch_assoc();
             $_SESSION['id_usu'] = $row['id_usu']; // Guardar ID de usuario en la sesión
-            header("Location: formularios/formulario.php"); // Redirigir a la página principal
+            header("Location: formularios/escoger.php"); // Redirigir a la página principal
             ?>
         <?php else: ?>
             <p>Usuario o contraseña incorrectos.</p>
