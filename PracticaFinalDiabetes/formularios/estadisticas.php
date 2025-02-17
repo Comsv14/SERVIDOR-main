@@ -29,6 +29,17 @@ if (!$resultado) {
         $dia = $row['dia'] - 1;  // Los días empiezan desde 1, pero los arrays comienzan desde 0
         $niveles_glucosa[$dia] = $row['lenta'];  // Asignar el valor de glucosa para ese día
     }
+
+    // Calcular el promedio de glucosa lenta
+    $total_lenta = 0;
+    $dias_con_datos = 0;
+    foreach ($resultado as $row) {
+        if ($row['lenta'] !== null) {
+            $total_lenta += $row['lenta'];
+            $dias_con_datos++;
+        }
+    }
+    $promedio_glucosa_lenta = $dias_con_datos > 0 ? $total_lenta / $dias_con_datos : null;
 }
 ?>
 
@@ -125,34 +136,43 @@ if (!$resultado) {
             transform: scale(1.05);
         }
 
-        /* Contenedor de respuesta */
-        .response-container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            width: 350px;
-            text-align: center;
+        /* Promedio de glucosa */
+        .promedio-glucosa {
+            margin-top: 20px;
+            font-size: 18px;
             color: white;
-        }
-
-        /* Estilo de los enlaces */
-        .response-container a {
-            color: #f39c12;
-            text-decoration: none;
             font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
         }
+        .choose-btn {
+    background-color: #2980b9; /* Color azul para el botón */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
 
-        .response-container a:hover {
-            color: #e67e22;
-        }
+.choose-btn:hover {
+    background-color: #3498db; /* Azul más claro para el hover */
+    transform: scale(1.05); 
+}
 
-        /* Estilo para los mensajes */
-        .response-container p {
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
+.choose-btn:active {
+    background-color: #1f7d99; /* Azul más oscuro para el clic */
+    transform: scale(0.98); 
+}
+
+.button-container {
+    margin-top: 20px; 
+    text-align: center; 
+}
+
     </style>
 </head>
 <body>
@@ -172,6 +192,13 @@ if (!$resultado) {
         </div>
         <button type="submit" class="login-btn">Ver Estadísticas</button>
     </form>
+
+    <!-- Mostrar el promedio de glucosa -->
+    <?php if ($promedio_glucosa_lenta !== null): ?>
+        <div class="promedio-glucosa">
+            Promedio de Glucosa Lenta: <?php echo number_format($promedio_glucosa_lenta, 2); ?> mg/dL
+        </div>
+    <?php endif; ?>
 
     <!-- Mostrar la gráfica -->
     <?php if ($resultado): ?>
@@ -197,38 +224,60 @@ if (!$resultado) {
                             title: {
                                 display: true,
                                 text: 'Nivel de Glucosa',
-                                color: '#fff',  // Color de las etiquetas del eje Y
+                                color: '#fff',
                                 font: {
-                                    size: 14,  // Tamaño de las etiquetas del eje Y
+                                    size: 14,
                                 }
                             },
                             ticks: {
-                                color: '#f39c12'  // Color de los números en el eje Y
+                                color: '#f39c12'
                             }
                         },
                         x: {
                             title: {
                                 display: true,
                                 text: 'Días del Mes',
-                                color: '#fff',  // Color de las etiquetas del eje X
+                                color: '#fff',
                                 font: {
-                                    size: 14,  // Tamaño de las etiquetas del eje X
+                                    size: 14,
                                 }
                             },
                             ticks: {
-                                color: '#f39c12'  // Color de los números en el eje X
+                                color: '#f39c12'
                             }
                         }
+                    },
+                    annotation: {
+                        annotations: [{
+                            type: 'line',
+                            yMin: <?php echo $promedio_glucosa_lenta; ?>,
+                            yMax: <?php echo $promedio_glucosa_lenta; ?>,
+                            borderColor: 'red',
+                            borderWidth: 2,
+                            label: {
+                                content: 'Promedio: <?php echo number_format($promedio_glucosa_lenta, 2); ?>',
+                                enabled: true,
+                                position: 'center',
+                                backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }]
                     }
                 }
             });
         </script>
     <?php else: ?>
-        <div class="response-container">
-            <p><?php echo $mensaje; ?></p>
+        <div class="promedio-glucosa">
+            <?php echo $mensaje; ?>
         </div>
     <?php endif; ?>
+    <div class="button-container">
+                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+            </div>
 </div>
+
 
 </body>
 </html>

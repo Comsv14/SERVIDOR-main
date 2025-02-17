@@ -40,6 +40,7 @@
             text-align: center;
             margin-bottom: 20px;
             font-size: 24px;
+            color: #f39c12;
         }
 
         /* Grupos de inputs */
@@ -68,11 +69,37 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Botón de enviar */
-        .submit-btn {
-            width: 100%;
+        /* Botón de seleccionar comida */
+        .food-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .food-option {
             padding: 10px;
-            background: #2a5298;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .food-option:hover {
+            background-color: #e67e22;
+        }
+
+        /* Botón de enviar y escoger */
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .submit-btn, .choose-btn {
+            width: 48%;
+            padding: 10px;
             border: none;
             border-radius: 5px;
             font-size: 16px;
@@ -82,8 +109,21 @@
             transition: background 0.3s, transform 0.2s;
         }
 
+        .submit-btn {
+            background: #f39c12;
+        }
+
         .submit-btn:hover {
-            background: #1e3c72;
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+
+        .choose-btn {
+            background: #3498db;
+        }
+
+        .choose-btn:hover {
+            background: #2980b9;
             transform: scale(1.05);
         }
 
@@ -98,24 +138,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             padding-bottom: 10px;
         }
-        .submit-btn {
-    width: 100%;
-    padding: 10px;
-    background: #f39c12;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.submit-btn:hover {
-    background: #e67e22;
-    transform: scale(1.05);
-}
     </style>
 </head>
 <body>
@@ -144,7 +166,11 @@
                 <h2>Registro de Comida</h2>
                 <div class="input-group">
                     <label for="tipo_comida">Tipo de Comida:</label>
-                    <input type="text" id="tipo_comida" name="tipo_comida" required>
+                    <div class="food-options">
+                        <button type="button" class="food-option" id="desayuno" name="tipo_comida" value="Desayuno">Desayuno</button>
+                        <button type="button" class="food-option" id="comida" name="tipo_comida" value="Comida">Comida</button>
+                        <button type="button" class="food-option" id="cena" name="tipo_comida" value="Cena">Cena</button>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label for="gl_1h">Glucosa 1h después:</label>
@@ -194,9 +220,23 @@
                 </div>
             </div>
 
-            <!-- Botón de enviar -->
-            <button type="submit" class="submit-btn">Enviar Datos</button>
+            <!-- Contenedor de los botones -->
+            <div class="button-container">
+                <button type="submit" class="submit-btn">Enviar Datos</button>
+                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+            </div>
         </form>
     </div>
+
+    <script>
+        // Funcionalidad para seleccionar tipo de comida
+        document.querySelectorAll('.food-option').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.food-option').forEach(btn => btn.style.backgroundColor = '#f39c12');
+                button.style.backgroundColor = '#e67e22';
+                document.getElementById('tipo_comida').value = button.value;
+            });
+        });
+    </script>
 </body>
 </html>

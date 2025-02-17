@@ -149,6 +149,35 @@ $diasMes = date('t', strtotime($primerDia)); // Días en el mes
         .nav a:active {
             transform: scale(0.98);
         }
+        .choose-btn {
+    background-color: #3498db; /* Color de fondo principal */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: none; /* Asegúrate de que no haya sombra extraña */
+}
+
+.choose-btn:hover {
+    background-color: #2980b9; /* Tonalidad más oscura para hover */
+    transform: scale(1.05); /* Aumentar tamaño al pasar el mouse */
+}
+
+.choose-btn:active {
+    background-color: #1f618d; /* Tonalidad aún más oscura para active */
+    transform: scale(0.98); /* Reducir tamaño al hacer clic */
+}
+
+.button-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
     </style>
 </head>
 <body>
@@ -195,6 +224,9 @@ $diasMes = date('t', strtotime($primerDia)); // Días en el mes
             ?>
         </tr>
     </table>
+    <div class="button-container">
+                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+            </div>
 </div>
 
 </body>
