@@ -69,6 +69,7 @@
         <form action="procesar.php" method="POST">
             <button type="submit" name="opcion" value="formulario.php" class="submit-btn">Añadir comida</button>
             <button type="submit" name="opcion" value="calendario.php" class="submit-btn">Ir al calendario</button>
+            <button type="submit" name="opcion" value="estadisticas.php" class="submit-btn">Ir a las estadisticas</button>
         </form>
     </div>
 </body>

@@ -37,7 +37,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 // Generar la estructura del calendario
 $diaSemana = date('N', strtotime($primerDia)); // Día de la semana del primer día
 $diasMes = date('t', strtotime($primerDia)); // Días en el mes
-
 ?>
 
 <!DOCTYPE html>
@@ -47,55 +46,85 @@ $diasMes = date('t', strtotime($primerDia)); // Días en el mes
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario Diabetes</title>
     <style>
-        body {
+        /* Reset de estilos */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
         }
 
+        /* Fondo con degradado elegante */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        /* Contenedor del calendario */
         .calendario {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 20px;
+            padding: 2rem;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             width: 90%;
             max-width: 800px;
             text-align: center;
+            color: white;
         }
 
-        h1 {
-            margin-bottom: 10px;
+        /* Título */
+        .calendario h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
         }
 
+        /* Tabla del calendario */
         table {
             width: 100%;
             border-collapse: collapse;
         }
 
         th, td {
-            padding: 10px;
+            padding: 15px;
             text-align: center;
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         th {
             background: rgba(255, 255, 255, 0.2);
+            color: #fff;
         }
 
-        .evento {
-            background: #f39c12;
-            color: white;
-            padding: 5px;
-            border-radius: 5px;
+        td {
+            cursor: pointer;
+        }
+
+        td:hover {
+            background-color: #3f7cac;
+            transition: 0.3s ease;
+        }
+
+        td a {
+            color: #f39c12; /* Naranja */
+            font-size: 1.5rem;
+            text-decoration: none;
             display: block;
-            margin: 2px 0;
+            padding: 10px;
+            transition: transform 0.1s ease, color 0.3s ease; /* Animación para mover el número */
+        }
+
+        td a:hover {
+            background-color: #f39c12;
+            color: #fff; /* Fondo naranja y texto blanco cuando el cursor está encima */
+        }
+
+        td a:active {
+            transform: scale(0.95); /* Reduce el tamaño al hacer clic para simular el movimiento */
+            color: #fff; /* El texto se vuelve blanco al hacer clic */
         }
 
         .nav {
@@ -108,13 +137,17 @@ $diasMes = date('t', strtotime($primerDia)); // Días en el mes
             text-decoration: none;
             color: white;
             background: #e67e22;
-            padding: 5px 10px;
+            padding: 10px 15px;
             border-radius: 5px;
             transition: 0.3s;
         }
 
         .nav a:hover {
             background: #d35400;
+        }
+
+        .nav a:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
@@ -142,14 +175,9 @@ $diasMes = date('t', strtotime($primerDia)); // Días en el mes
             for ($dia = 1; $dia <= $diasMes; $dia++) {
                 $fecha = "$anio-$mes-" . str_pad($dia, 2, "0", STR_PAD_LEFT);
                 echo "<td>";
-                echo "<strong>$dia</strong>";
 
-                // Mostrar eventos del día
-                if (isset($eventos[$fecha])) {
-                    foreach ($eventos[$fecha] as $evento) {
-                        echo "<span class='evento'>$evento</span>";
-                    }
-                }
+                // Hacer clic para redirigir a datos.php
+                echo "<a href='datos.php?fecha=$fecha'><strong>$dia</strong></a>";
 
                 echo "</td>";
 
