@@ -167,10 +167,12 @@
                 <div class="input-group">
                     <label for="tipo_comida">Tipo de Comida:</label>
                     <div class="food-options">
-                        <button type="button" class="food-option" id="desayuno" name="tipo_comida" value="Desayuno">Desayuno</button>
-                        <button type="button" class="food-option" id="comida" name="tipo_comida" value="Comida">Comida</button>
-                        <button type="button" class="food-option" id="cena" name="tipo_comida" value="Cena">Cena</button>
+                        <button type="button" class="food-option" data-value="Desayuno">Desayuno</button>
+                        <button type="button" class="food-option" data-value="Comida">Comida</button>
+                        <button type="button" class="food-option" data-value="Cena">Cena</button>
                     </div>
+                    <!-- Campo oculto para almacenar el valor seleccionado -->
+                    <input type="hidden" id="tipo_comida" name="tipo_comida" required>
                 </div>
                 <div class="input-group">
                     <label for="gl_1h">Glucosa 1h después:</label>
@@ -232,11 +234,14 @@
         // Funcionalidad para seleccionar tipo de comida
         document.querySelectorAll('.food-option').forEach(button => {
             button.addEventListener('click', () => {
+                // Remover el estilo activo de todos los botones
                 document.querySelectorAll('.food-option').forEach(btn => btn.style.backgroundColor = '#f39c12');
+                // Aplicar el estilo activo al botón seleccionado
                 button.style.backgroundColor = '#e67e22';
-                document.getElementById('tipo_comida').value = button.value;
+                // Actualizar el valor del campo oculto
+                document.getElementById('tipo_comida').value = button.getAttribute('data-value');
             });
         });
     </script>
 </body>
-</html>
+</html>     

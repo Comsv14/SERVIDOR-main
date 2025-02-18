@@ -2,6 +2,9 @@
 // Establecer la conexión con la base de datos
 $pdo = new PDO('mysql:host=localhost;dbname=DiabetesDB', 'root', '');
 
+// Inicializar la variable $promedio_glucosa_lenta
+$promedio_glucosa_lenta = null;
+
 // Preparar la consulta SQL
 $sql = "SELECT DAY(fecha) AS dia, lenta FROM CONTROL_GLUCOSA WHERE MONTH(fecha) = :mes AND YEAR(fecha) = :anio";
 $stmt = $pdo->prepare($sql);
@@ -147,32 +150,31 @@ if (!$resultado) {
             border-radius: 5px;
         }
         .choose-btn {
-    background-color: #2980b9; /* Color azul para el botón */
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
+            background-color: #2980b9; /* Color azul para el botón */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
 
-.choose-btn:hover {
-    background-color: #3498db; /* Azul más claro para el hover */
-    transform: scale(1.05); 
-}
+        .choose-btn:hover {
+            background-color: #3498db; /* Azul más claro para el hover */
+            transform: scale(1.05); 
+        }
 
-.choose-btn:active {
-    background-color: #1f7d99; /* Azul más oscuro para el clic */
-    transform: scale(0.98); 
-}
+        .choose-btn:active {
+            background-color: #1f7d99; /* Azul más oscuro para el clic */
+            transform: scale(0.98); 
+        }
 
-.button-container {
-    margin-top: 20px; 
-    text-align: center; 
-}
-
+        .button-container {
+            margin-top: 20px; 
+            text-align: center; 
+        }
     </style>
 </head>
 <body>
@@ -274,10 +276,9 @@ if (!$resultado) {
         </div>
     <?php endif; ?>
     <div class="button-container">
-                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
-            </div>
+        <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+    </div>
 </div>
-
 
 </body>
 </html>

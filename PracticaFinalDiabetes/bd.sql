@@ -1,5 +1,5 @@
-CREATE DATABASE DiabetesDB;
-USE DiabetesDB;
+CREATE DATABASE diabetesdb;
+USE diabetesdb;
 
 CREATE TABLE USUARIO (
   id_usu INT NOT NULL AUTO_INCREMENT,
