@@ -1,14 +1,7 @@
 <?php
-session_start(); // Iniciar sesión
-
-// Verificar si el usuario está autenticado
-if (!isset($_SESSION['id_usu'])) {
-    die("Error: Usuario no autenticado.");
-}
-
 // Conexión a la base de datos
 $host = "localhost";
-$dbname = "diabetesdb";
+$dbname = "DiabetesDB";
 $username = "root";  // Cambia esto si tienes otro usuario
 $password = "";      // Cambia esto si tienes contraseña
 
@@ -37,14 +30,19 @@ $correccion = $_POST['correccion'];
 $glucosa_hipo = $_POST['glucosa_hipo'];
 $hora_hipo = $_POST['hora_hipo'];
 
-// Obtener el ID del usuario autenticado desde la sesión
-$id_usu = $_SESSION['id_usu'];
+$id_usu = 1; // Esto debería venir de la sesión del usuario autenticado
 
 // Insertar datos en CONTROL_GLUCOSA
 $sql_control = "INSERT INTO CONTROL_GLUCOSA (fecha, deporte, lenta, id_usu) 
                 VALUES ('$fecha', $deporte, $lenta, $id_usu)";
 
 $conn->query($sql_control);
+
+// Insertar datos en COMIDA
+$sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
+               VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
+
+$conn->query($sql_comida);
 
 // Insertar datos en HIPERGLUCEMIA
 $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
@@ -55,28 +53,6 @@ $conn->query($sql_hiper);
 // Insertar datos en HIPOGLUCEMIA
 $sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
              VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
-
-// Verificar cuántas comidas tiene el usuario en el día
-$sql_check_comidas = "SELECT COUNT(*) AS total_comidas 
-                      FROM COMIDA 
-                      WHERE fecha = '$fecha' AND id_usu = $id_usu";
-$result_check = $conn->query($sql_check_comidas);
-$row = $result_check->fetch_assoc();
-
-if ($row['total_comidas'] < 3) {
-    // Si tiene menos de 3 comidas, insertar la nueva comida
-    $sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
-                   VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
-    $conn->query($sql_comida);
-    
-    // Mensaje de éxito
-    $mensaje = "Comida añadida correctamente.";
-    $color_mensaje = "green";
-} else {
-    // Si ya tiene 3 comidas, mostrar un mensaje de error
-    $mensaje = "Ya has añadido 3 comidas en este día. No puedes añadir más.";
-    $color_mensaje = "red";
-}
 
 $conn->query($sql_hipo);
 
@@ -98,6 +74,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resultado del Envío</title>
     <style>
+        /* Reset de estilos */
         * {
             margin: 0;
             padding: 0;
@@ -105,6 +82,7 @@ $conn->close();
             font-family: 'Poppins', sans-serif;
         }
 
+        /* Fondo con degradado elegante */
         body {
             display: flex;
             justify-content: center;
@@ -113,6 +91,7 @@ $conn->close();
             background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
 
+        /* Contenedor de la respuesta */
         .login-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -124,6 +103,7 @@ $conn->close();
             color: white;
         }
 
+        /* Estilo de los enlaces */
         .login-container a {
             color: #f39c12;
             text-decoration: none;
@@ -134,12 +114,14 @@ $conn->close();
             color: #e67e22;
         }
 
+        /* Estilo para los mensajes */
         .login-container p {
             margin-bottom: 20px;
             font-size: 16px;
-            color: <?php echo $color_mensaje; ?>;
+            color: <?php echo $color_mensaje; ?>; /* Color dinámico según el mensaje */
         }
 
+        /* Título (si lo necesitas) */
         .login-container h2 {
             margin-bottom: 20px;
             font-size: 24px;

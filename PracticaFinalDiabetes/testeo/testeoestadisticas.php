@@ -1,29 +1,19 @@
 <?php
-// Iniciar la sesión
-session_start();
-
-// Verificar si el usuario ha iniciado sesión
-if (!isset($_SESSION['id_usu'])) {
-    die("Por favor, inicia sesión para ver esta página.");
-}
-
 // Establecer la conexión con la base de datos
-$pdo = new PDO('mysql:host=localhost;dbname=diabetesdb', 'root', '');
+$pdo = new PDO('mysql:host=localhost;dbname=DiabetesDB', 'root', '');
 
 // Inicializar la variable $promedio_glucosa_lenta
 $promedio_glucosa_lenta = null;
 
 // Preparar la consulta SQL
-$sql = "SELECT DAY(fecha) AS dia, lenta FROM CONTROL_GLUCOSA WHERE MONTH(fecha) = :mes AND YEAR(fecha) = :anio AND id_usu = :id_usu";
+$sql = "SELECT DAY(fecha) AS dia, lenta FROM CONTROL_GLUCOSA WHERE MONTH(fecha) = :mes AND YEAR(fecha) = :anio";
 $stmt = $pdo->prepare($sql);
 
-// Ejecutar la consulta con los parámetros de mes, año y id_usu
+// Ejecutar la consulta con los parámetros de mes y año
 $mes = isset($_GET['mes']) ? $_GET['mes'] : date('m');  // Mes actual por defecto
 $anio = isset($_GET['anio']) ? $_GET['anio'] : date('Y'); // Año actual por defecto
-$id_usu = $_SESSION['id_usu']; // ID del usuario que ha iniciado sesión
 $stmt->bindParam(':mes', $mes);
 $stmt->bindParam(':anio', $anio);
-$stmt->bindParam(':id_usu', $id_usu);
 $stmt->execute();
 
 // Obtener los resultados
