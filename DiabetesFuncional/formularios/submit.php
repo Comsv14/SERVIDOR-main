@@ -23,12 +23,10 @@ $gl_2h = $_POST['gl_2h'];
 $raciones = $_POST['raciones'];
 $insulina = $_POST['insulina'];
 
-// Datos de Hiperglucemia
 $glucosa_hiper = $_POST['glucosa_hiper'];
 $hora_hiper = $_POST['hora_hiper'];
 $correccion = $_POST['correccion'];
 
-// Datos de Hipoglucemia
 $glucosa_hipo = $_POST['glucosa_hipo'];
 $hora_hipo = $_POST['hora_hipo'];
 
@@ -37,25 +35,26 @@ $id_usu = 1; // Esto debería venir de la sesión del usuario autenticado
 // Insertar datos en CONTROL_GLUCOSA
 $sql_control = "INSERT INTO CONTROL_GLUCOSA (fecha, deporte, lenta, id_usu) 
                 VALUES ('$fecha', $deporte, $lenta, $id_usu)";
+
 $conn->query($sql_control);
 
 // Insertar datos en COMIDA
 $sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
                VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
+
 $conn->query($sql_comida);
 
-// Condicional para insertar en HIPERGLUCEMIA o HIPOGLUCEMIA según los datos
-if (!empty($glucosa_hiper) && !empty($hora_hiper)) {
-    // Insertar datos en HIPERGLUCEMIA
-    $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, id_comida, fecha, id_usu) 
-                  VALUES ($glucosa_hiper, '$hora_hiper', $correccion, LAST_INSERT_ID(), '$fecha', $id_usu)";
-    $conn->query($sql_hiper);
-} elseif (!empty($glucosa_hipo) && !empty($hora_hipo)) {
-    // Insertar datos en HIPOGLUCEMIA
-    $sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, id_comida, fecha, id_usu) 
-                 VALUES ($glucosa_hipo, '$hora_hipo', LAST_INSERT_ID(), '$fecha', $id_usu)";
-    $conn->query($sql_hipo);
-}
+// Insertar datos en HIPERGLUCEMIA
+$sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
+              VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
+
+$conn->query($sql_hiper);
+
+// Insertar datos en HIPOGLUCEMIA
+$sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
+             VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
+
+$conn->query($sql_hipo);
 
 // Verificar errores
 if ($conn->error) {

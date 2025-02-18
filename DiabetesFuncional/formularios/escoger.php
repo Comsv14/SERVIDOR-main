@@ -67,8 +67,7 @@
     <div class="form-container">
         <h1>Selecciona una opción</h1>
         <form action="procesar.php" method="POST">
-            <button type="submit" name="opcion" value="formulariohyper.php" class="submit-btn">Añadir Hiperglucemia</button>
-            <button type="submit" name="opcion" value="formulariohipo.php" class="submit-btn">Añadir Hipoglucemia</button>
+            <button type="submit" name="opcion" value="formulario.php" class="submit-btn">Añadir comida</button>
             <button type="submit" name="opcion" value="calendario.php" class="submit-btn">Ir al calendario</button>
             <button type="submit" name="opcion" value="estadisticas.php" class="submit-btn">Ir a las estadisticas</button>
         </form>
