@@ -54,7 +54,7 @@
             margin-bottom: 5px;
         }
 
-        .input-group input {
+        .input-group input, .input-group select {
             width: 100%;
             padding: 10px;
             border: none;
@@ -65,11 +65,11 @@
             outline: none;
         }
 
-        .input-group input::placeholder {
+        .input-group input::placeholder, .input-group select {
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Botón de seleccionar comida */
+        /* Botones de seleccionar comida */
         .food-options {
             display: flex;
             justify-content: space-around;
@@ -83,11 +83,12 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
         }
 
         .food-option:hover {
             background-color: #e67e22;
+            transform: scale(1.05);
         }
 
         /* Botón de enviar y escoger */
@@ -137,7 +138,41 @@
             margin-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             padding-bottom: 10px;
+            color: #f39c12;
         }
+
+        /* Cambio para la selección de Evento */
+        .input-group select {
+            background: rgba(255, 255, 255, 0.2); /* Fondo oscuro como la página */
+            color: #f39c12; /* Color naranja para el texto */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .input-group select:focus {
+            border-color: #f39c12; /* Resalta con naranja cuando está en foco */
+        }
+
+        .event-section {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease;
+            overflow: hidden;
+            opacity: 0;
+            max-height: 0;
+        }
+
+        .event-section.active {
+            opacity: 1;
+            max-height: 500px;
+        }
+
+        /* Estilo para las secciones de Hipoglucemia e Hiperglucemia */
+        .event-section {
+            background: transparent; /* Fondo transparente */
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            color: white;
+        }
+
     </style>
 </head>
 <body>
@@ -171,7 +206,6 @@
                         <button type="button" class="food-option" data-value="Comida">Comida</button>
                         <button type="button" class="food-option" data-value="Cena">Cena</button>
                     </div>
-                    <!-- Campo oculto para almacenar el valor seleccionado -->
                     <input type="hidden" id="tipo_comida" name="tipo_comida" required>
                 </div>
                 <div class="input-group">
@@ -192,37 +226,50 @@
                 </div>
             </div>
 
-            <!-- Hiperglucemia -->
+            <!-- Elección de Hipo o Hiper -->
             <div class="form-section">
+                <h2>Tipo de Evento</h2>
+                <div class="input-group">
+                    <label for="evento">Seleccionar Tipo:</label>
+                    <select id="evento" name="evento">
+                        <option value="">Seleccione...</option>
+                        <option value="hipoglucemia">Hipoglucemia (Hipo)</option>
+                        <option value="hiperglucemia">Hiperglucemia (Hiper)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Hiperglucemia -->
+            <div class="event-section" id="hiperglucemia">
                 <h2>Hiperglucemia</h2>
                 <div class="input-group">
                     <label for="glucosa_hiper">Glucosa:</label>
-                    <input type="number" id="glucosa_hiper" name="glucosa_hiper" required>
+                    <input type="number" id="glucosa_hiper" name="glucosa_hiper">
                 </div>
                 <div class="input-group">
                     <label for="hora_hiper">Hora:</label>
-                    <input type="time" id="hora_hiper" name="hora_hiper" required>
+                    <input type="time" id="hora_hiper" name="hora_hiper">
                 </div>
                 <div class="input-group">
                     <label for="correccion">Corrección:</label>
-                    <input type="number" id="correccion" name="correccion" required>
+                    <input type="number" id="correccion" name="correccion">
                 </div>
             </div>
 
             <!-- Hipoglucemia -->
-            <div class="form-section">
+            <div class="event-section" id="hipoglucemia">
                 <h2>Hipoglucemia</h2>
                 <div class="input-group">
                     <label for="glucosa_hipo">Glucosa:</label>
-                    <input type="number" id="glucosa_hipo" name="glucosa_hipo" required>
+                    <input type="number" id="glucosa_hipo" name="glucosa_hipo">
                 </div>
                 <div class="input-group">
                     <label for="hora_hipo">Hora:</label>
-                    <input type="time" id="hora_hipo" name="hora_hipo" required>
+                    <input type="time" id="hora_hipo" name="hora_hipo">
                 </div>
             </div>
 
-            <!-- Contenedor de los botones -->
+            <!-- Botones -->
             <div class="button-container">
                 <button type="submit" class="submit-btn">Enviar Datos</button>
                 <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
@@ -234,14 +281,29 @@
         // Funcionalidad para seleccionar tipo de comida
         document.querySelectorAll('.food-option').forEach(button => {
             button.addEventListener('click', () => {
-                // Remover el estilo activo de todos los botones
                 document.querySelectorAll('.food-option').forEach(btn => btn.style.backgroundColor = '#f39c12');
-                // Aplicar el estilo activo al botón seleccionado
                 button.style.backgroundColor = '#e67e22';
-                // Actualizar el valor del campo oculto
-                document.getElementById('tipo_comida').value = button.getAttribute('data-value');
+                document.getElementById('tipo_comida').value = button.dataset.value;
             });
+        });
+
+        // Funcionalidad para mostrar el formulario de Hipoglucemia o Hiperglucemia
+        document.getElementById('evento').addEventListener('change', function() {
+            const selectedEvent = this.value;
+            const hiperglucemia = document.getElementById('hiperglucemia');
+            const hipoglucemia = document.getElementById('hipoglucemia');
+
+            if (selectedEvent === 'hiperglucemia') {
+                hiperglucemia.classList.add('active');
+                hipoglucemia.classList.remove('active');
+            } else if (selectedEvent === 'hipoglucemia') {
+                hipoglucemia.classList.add('active');
+                hiperglucemia.classList.remove('active');
+            } else {
+                hipoglucemia.classList.remove('active');
+                hiperglucemia.classList.remove('active');
+            }
         });
     </script>
 </body>
-</html>     
+</html>

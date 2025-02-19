@@ -20,74 +20,97 @@ if ($conn->connect_error) {
 }
 
 // Obtener los datos del formulario
-$fecha = $_POST['fecha'];
-$deporte = $_POST['deporte'];
-$lenta = $_POST['lenta'];
-
+$fecha       = $_POST['fecha'];
+$deporte     = $_POST['deporte'];
+$lenta       = $_POST['lenta'];
 $tipo_comida = $_POST['tipo_comida'];
-$gl_1h = $_POST['gl_1h'];
-$gl_2h = $_POST['gl_2h'];
-$raciones = $_POST['raciones'];
-$insulina = $_POST['insulina'];
-
+$gl_1h       = $_POST['gl_1h'];
+$gl_2h       = $_POST['gl_2h'];
+$raciones    = $_POST['raciones'];
+$insulina    = $_POST['insulina'];
 $glucosa_hiper = $_POST['glucosa_hiper'];
-$hora_hiper = $_POST['hora_hiper'];
-$correccion = $_POST['correccion'];
+$hora_hiper    = $_POST['hora_hiper'];
+$correccion    = $_POST['correccion'];
+$glucosa_hipo  = $_POST['glucosa_hipo'];
+$hora_hipo     = $_POST['hora_hipo'];
 
-$glucosa_hipo = $_POST['glucosa_hipo'];
-$hora_hipo = $_POST['hora_hipo'];
+// Verificar que los campos obligatorios estén llenos.
+// En este ejemplo, consideramos obligatorios: fecha, tipo_comida, gl_1h, gl_2h, raciones, insulina,
+// y los campos de HIPO (glucosa_hipo y hora_hipo). Los campos de HIPER son opcionales.
+if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina) ||
+    empty($glucosa_hipo) || empty($hora_hipo)) {
+    
+    echo "Datos recibidos: <br>";
+    echo "Fecha: $fecha<br>";
+    echo "Deporte: $deporte<br>";
+    echo "Lenta: $lenta<br>";
+    echo "Tipo comida: $tipo_comida<br>";
+    echo "Glucosa 1h: $gl_1h<br>";
+    echo "Glucosa 2h: $gl_2h<br>";
+    echo "Raciones: $raciones<br>";
+    echo "Insulina: $insulina<br>";
+    echo "Glucosa Hiper: $glucosa_hiper<br>";
+    echo "Hora Hiper: $hora_hiper<br>";
+    echo "Corrección: $correccion<br>";
+    echo "Glucosa Hipo: $glucosa_hipo<br>";
+    echo "Hora Hipo: $hora_hipo<br>";
+    
+    die("Error: Todos los campos obligatorios deben ser completados.");
+}
 
 // Obtener el ID del usuario autenticado desde la sesión
 $id_usu = $_SESSION['id_usu'];
 
-// Insertar datos en CONTROL_GLUCOSA
-$sql_control = "INSERT INTO CONTROL_GLUCOSA (fecha, deporte, lenta, id_usu) 
-                VALUES ('$fecha', $deporte, $lenta, $id_usu)";
+/* 
+  Primero, nos aseguramos de que exista un registro en CONTROL_GLUCOSA para la fecha y el usuario.
+  Esto es necesario para cumplir la restricción foránea de la tabla COMIDA.
+*/
+$sql_check_control = "SELECT * FROM CONTROL_GLUCOSA WHERE fecha = '$fecha' AND id_usu = $id_usu";
+$result_check_control = $conn->query($sql_check_control);
+if ($result_check_control->num_rows == 0) {
+    $sql_control = "INSERT INTO CONTROL_GLUCOSA (fecha, deporte, lenta, id_usu) 
+                    VALUES ('$fecha', $deporte, $lenta, $id_usu)";
+    if (!$conn->query($sql_control)) {
+        die("Error en CONTROL_GLUCOSA: " . $conn->error);
+    }
+}
 
-$conn->query($sql_control);
+/* 
+  Verificamos si ya existe un registro en COMIDA para esta combinación de fecha, tipo_comida y usuario.
+  Dado que la columna generada 'fecha_comida' se construye como CONCAT(fecha, '-', tipo_comida)
+  y se definió un índice único sobre (fecha_comida, id_usu), no se permitirá duplicidad.
+*/
+$sql_check_comida = "SELECT * FROM COMIDA 
+                     WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
+$result_check_comida = $conn->query($sql_check_comida);
 
-// Insertar datos en HIPERGLUCEMIA
-$sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
-              VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
-
-$conn->query($sql_hiper);
-
-// Insertar datos en HIPOGLUCEMIA
-$sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
-             VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
-
-// Verificar cuántas comidas tiene el usuario en el día
-$sql_check_comidas = "SELECT COUNT(*) AS total_comidas 
-                      FROM COMIDA 
-                      WHERE fecha = '$fecha' AND id_usu = $id_usu";
-$result_check = $conn->query($sql_check_comidas);
-$row = $result_check->fetch_assoc();
-
-if ($row['total_comidas'] < 3) {
-    // Si tiene menos de 3 comidas, insertar la nueva comida
+if ($result_check_comida->num_rows == 0) {
+    // Si no existe, insertamos el registro en COMIDA.
     $sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
                    VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
-    $conn->query($sql_comida);
-    
-    // Mensaje de éxito
+    if (!$conn->query($sql_comida)) {
+        die("Error en COMIDA: " . $conn->error);
+    }
     $mensaje = "Comida añadida correctamente.";
     $color_mensaje = "green";
 } else {
-    // Si ya tiene 3 comidas, mostrar un mensaje de error
-    $mensaje = "Ya has añadido 3 comidas en este día. No puedes añadir más.";
+    $mensaje = "Ya existe un registro para el tipo de comida '$tipo_comida' en la fecha $fecha.";
     $color_mensaje = "red";
 }
 
-$conn->query($sql_hipo);
-
-// Verificar errores
-if ($conn->error) {
-    $mensaje = "Error: " . $conn->error;
-    $color_mensaje = "red"; // Color para errores
-} else {
-    $mensaje = "Datos guardados correctamente.";
-    $color_mensaje = "green"; // Color para éxito
+/* 
+  Inserción en HIPERGLUCEMIA solo si se han completado sus campos (considerados opcionales).
+*/
+if (!empty($glucosa_hiper) && !empty($hora_hiper) && !empty($correccion)) {
+    $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
+                  VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
+    $conn->query($sql_hiper);
 }
+
+/* Inserción en HIPOGLUCEMIA */
+$sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
+             VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
+$conn->query($sql_hipo);
 
 $conn->close();
 ?>
@@ -104,7 +127,6 @@ $conn->close();
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-
         body {
             display: flex;
             justify-content: center;
@@ -112,7 +134,6 @@ $conn->close();
             height: 100vh;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
-
         .login-container {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -123,23 +144,19 @@ $conn->close();
             text-align: center;
             color: white;
         }
-
         .login-container a {
             color: #f39c12;
             text-decoration: none;
             font-weight: bold;
         }
-
         .login-container a:hover {
             color: #e67e22;
         }
-
         .login-container p {
             margin-bottom: 20px;
             font-size: 16px;
             color: <?php echo $color_mensaje; ?>;
         }
-
         .login-container h2 {
             margin-bottom: 20px;
             font-size: 24px;
