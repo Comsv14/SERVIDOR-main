@@ -23,6 +23,7 @@
             padding: 20px;
             text-align: center;
             flex-direction: column; /* Asegura que los elementos estén apilados verticalmente */
+            position: relative; /* Necesario para posicionar el botón de cerrar sesión */
         }
 
         /* Estilo del mensaje de bienvenida */
@@ -86,6 +87,26 @@
             background: #e67e22;
             transform: scale(1.05);
         }
+
+        /* Estilo del botón de cerrar sesión */
+        .logout-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -93,6 +114,7 @@
     session_start();
     $usuario = $_SESSION['usuario'];
     ?>
+    <button class="logout-btn" onclick="window.location.href='../index.php';">Cerrar sesión</button>
     <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($usuario); ?>!</div>
     <div class="form-container">
         <h1>Selecciona una opción</h1>
