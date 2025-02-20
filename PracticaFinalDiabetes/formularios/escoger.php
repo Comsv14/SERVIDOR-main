@@ -21,6 +21,30 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
             padding: 20px;
+            text-align: center;
+            flex-direction: column; /* Asegura que los elementos estén apilados verticalmente */
+        }
+
+        /* Estilo del mensaje de bienvenida */
+        .welcome-message {
+            font-size: 30px;
+            font-weight: 600;
+            margin-bottom: 40px; /* Espacio entre el mensaje y el formulario */
+            color: #fff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 165, 0, 0.5);
+            animation: slideIn 1s ease-out forwards;
+        }
+
+        /* Animación para el mensaje de bienvenida */
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         /* Contenedor del formulario */
@@ -33,13 +57,14 @@
             width: 100%;
             max-width: 600px;
             color: white;
-            text-align: center;
         }
 
-        /* Título */
+        /* Título del formulario */
         .form-container h1 {
             margin-bottom: 20px;
             font-size: 24px;
+            font-weight: bold;
+            color: #f39c12;
         }
 
         /* Botones de opciones */
@@ -64,6 +89,11 @@
     </style>
 </head>
 <body>
+    <?php
+    session_start();
+    $usuario = $_SESSION['usuario'];
+    ?>
+    <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($usuario); ?>!</div>
     <div class="form-container">
         <h1>Selecciona una opción</h1>
         <form action="procesar.php" method="POST">

@@ -39,23 +39,9 @@ $hora_hipo     = $_POST['hora_hipo'];
 // y los campos de HIPO (glucosa_hipo y hora_hipo). Los campos de HIPER son opcionales.
 if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina) ||
     empty($glucosa_hipo) || empty($hora_hipo)) {
-    
-    echo "Datos recibidos: <br>";
-    echo "Fecha: $fecha<br>";
-    echo "Deporte: $deporte<br>";
-    echo "Lenta: $lenta<br>";
-    echo "Tipo comida: $tipo_comida<br>";
-    echo "Glucosa 1h: $gl_1h<br>";
-    echo "Glucosa 2h: $gl_2h<br>";
-    echo "Raciones: $raciones<br>";
-    echo "Insulina: $insulina<br>";
-    echo "Glucosa Hiper: $glucosa_hiper<br>";
-    echo "Hora Hiper: $hora_hiper<br>";
-    echo "Corrección: $correccion<br>";
-    echo "Glucosa Hipo: $glucosa_hipo<br>";
-    echo "Hora Hipo: $hora_hipo<br>";
-    
-    die("Error: Todos los campos obligatorios deben ser completados.");
+        
+        header("Location: formulario.php?error=1");
+        exit();
 }
 
 // Obtener el ID del usuario autenticado desde la sesión

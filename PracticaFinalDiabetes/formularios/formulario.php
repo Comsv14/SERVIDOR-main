@@ -177,6 +177,12 @@
 </head>
 <body>
     <div class="form-container">
+        <!-- Mostrar mensaje de error si falta algún campo -->
+        <?php
+        if (isset($_GET['error']) && $_GET['error'] == 1) {
+            echo "<p style='color: red; text-align: center;'>Error: Todos los campos obligatorios deben ser completados.</p>";
+        }
+        ?>
         <h1>Registro de Datos para la Diabetes</h1>
         <form action="submit.php" method="POST">
             <!-- Control de Glucosa -->

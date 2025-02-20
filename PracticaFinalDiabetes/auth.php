@@ -14,6 +14,8 @@ if ($conn->connect_error) {
 $usuario = $_POST['usuario'];
 $contra = $_POST['contra'];
 
+$_SESSION['usuario'] = $usuario;
+
 // Consulta para verificar las credenciales
 $sql = "SELECT id_usu FROM USUARIO WHERE usuario = '$usuario' AND contra = '$contra'";
 $result = $conn->query($sql);
