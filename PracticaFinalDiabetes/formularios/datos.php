@@ -85,6 +85,7 @@ if ($resultado->num_rows > 0) {
     echo '<a class="calendar-btn" href="calendario.php">📅 Calendario</a>';
 } else {
     echo "<p>No se encontraron registros.</p>";
+    echo '<a class="calendar-btn" href="calendario.php">📅 Calendario</a>';
 }
 
 // Cerrar la conexión
