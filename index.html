@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Foto de Perfil</title>
+    <style>
+        .profile-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        .profile-container img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .upload-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .upload-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="profile-container">
+    <h2>¡Sube tu Foto de Perfil!</h2>
+    <img id="profilePic" src="default-avatar.png" alt="Foto de perfil">
+    <br>
+    <input type="file" id="fileInput" class="upload-btn">
+    <button onclick="guardarFoto()" class="upload-btn">Guardar Foto</button>
+</div>
+
+<script>
+// Mostrar la imagen seleccionada
+document.getElementById('fileInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('profilePic').src = event.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Guardar la foto en localStorage
+function guardarFoto() {
+    const profilePic = document.getElementById('profilePic').src;
+    localStorage.setItem('profilePic', profilePic);
+    alert('Foto de perfil guardada!');
+}
+
+// Recuperar la foto guardada al cargar la página
+window.onload = function() {
+    const storedPic = localStorage.getItem('profilePic');
+    if (storedPic) {
+        document.getElementById('profilePic').src = storedPic;
+    }
+};
+</script>
+
+</body>
+</html>
