@@ -277,8 +277,8 @@
 
             <!-- Botones -->
             <div class="button-container">
-                <button type="submit" class="submit-btn">Enviar Datos</button>
-                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+                <button type="submit" class="submit-btn">📤 Enviar Datos</button>
+                <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">📋 Menú Principal</button>
             </div>
         </form>
     </div>

@@ -206,7 +206,7 @@ $diasMes = date('t', strtotime($primerDia));
         </tr>
     </table>
     <div class="button-container">
-        <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+        <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">📋 Menú Principal</button>
     </div>
 </div>
 </body>

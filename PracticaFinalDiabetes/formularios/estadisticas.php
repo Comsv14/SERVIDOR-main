@@ -202,7 +202,7 @@ if (!$resultado) {
             <label for="anio">Año:</label>
             <input type="number" name="anio" id="anio" value="<?php echo $anio; ?>" min="2000" max="3000" required>
         </div>
-        <button type="submit" class="login-btn">Ver Estadísticas</button>
+        <button type="submit" class="login-btn">📊 Ver Estadísticas</button>
     </form>
 
     <!-- Mostrar el promedio de glucosa -->
@@ -286,7 +286,7 @@ if (!$resultado) {
         </div>
     <?php endif; ?>
     <div class="button-container">
-        <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">Ir a Escoger</button>
+        <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">📋 Menú Principal</button>
     </div>
 </div>
 

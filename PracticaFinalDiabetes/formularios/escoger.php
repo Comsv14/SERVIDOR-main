@@ -114,14 +114,15 @@
     session_start();
     $usuario = $_SESSION['usuario'];
     ?>
-    <button class="logout-btn" onclick="window.location.href='../index.php';">Cerrar sesión</button>
+    <button class="logout-btn" onclick="window.location.href='../index.php';">🔒 Cerrar sesión</button>
     <div class="welcome-message">¡Bienvenido, <?php echo htmlspecialchars($usuario); ?>!</div>
     <div class="form-container">
         <h1>Selecciona una opción</h1>
         <form action="procesar.php" method="POST">
-            <button type="submit" name="opcion" value="formulario.php" class="submit-btn">Añadir comida</button>
-            <button type="submit" name="opcion" value="calendario.php" class="submit-btn">Ir al calendario</button>
-            <button type="submit" name="opcion" value="estadisticas.php" class="submit-btn">Ir a las estadisticas</button>
+        <button type="submit" name="opcion" value="formulario.php" class="submit-btn">🍽️ Añadir comida</button>
+        <button type="submit" name="opcion" value="calendario.php" class="submit-btn">📅 Ir al calendario</button>
+        <button type="submit" name="opcion" value="estadisticas.php" class="submit-btn">📊 Ir a las estadísticas</button>
+
         </form>
     </div>
 </body>

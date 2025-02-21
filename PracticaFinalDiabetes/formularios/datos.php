@@ -42,7 +42,6 @@ $sql = "SELECT
 
 // Ejecutar la consulta
 $resultado = $conexion->query($sql);
-
 // Comprobar si hay resultados
 if ($resultado->num_rows > 0) {
     echo "<div class='contenedor'>";
@@ -83,6 +82,7 @@ if ($resultado->num_rows > 0) {
     
     echo "</div>";
     echo "</div>";
+    echo '<a class="calendar-btn" href="calendario.php">📅 Calendario</a>';
 } else {
     echo "<p>No se encontraron registros.</p>";
 }
@@ -181,4 +181,31 @@ $conexion->close();
     .tabla-div table {
         width: 48%; /* Para que las tablas se dividan igualmente */
     }
+    .calendar-btn {
+    margin-top:  20px;
+    top: 20px;
+    left: 20px;
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+    font-size: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none; /* Elimina el subrayado del enlace */
+}
+
+.calendar-btn:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.calendar-btn:active {
+    transform: scale(0.95);
+}
+
 </style>
