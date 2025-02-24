@@ -1,0 +1,16 @@
+[
+    {
+        "nombre": "Juan Pérez",
+        "dni": "12345678A",
+        "fecha_nacimiento": "1990-05-10",
+        "email": "juan@mail.com",
+        "telefono": "600123456"
+    },
+    {
+        "nombre": "María López",
+        "dni": "87654321B",
+        "fecha_nacimiento": "1985-12-20",
+        "email": "maria@mail.com",
+        "telefono": "601234567"
+    }
+]
