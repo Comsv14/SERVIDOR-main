@@ -13,10 +13,10 @@ $response_message = ""; // Variable para almacenar el mensaje de respuesta
 
 // Capturar los valores del formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nombre = $_POST['nombre'] ?? null;
-    $apellidos = $_POST['apellidos'] ?? null;
-    $usuario = $_POST['usuario'] ?? null;
-    $contra = $_POST['contra'] ?? null;
+    $nombre = htmlspecialchars(trim($_POST['nombre'] ?? ''));
+    $apellidos = htmlspecialchars(trim($_POST['apellidos'] ?? ''));
+    $usuario = htmlspecialchars(trim($_POST['usuario'] ?? ''));
+    $contra = trim($_POST['contra'] ?? '');
     $fecha_nacimiento = $_POST['fecha_nacimiento'] ?? null;
 
     // Validar que los valores no sean null
@@ -32,11 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($stmt_check->num_rows > 0) {
             $response_message = "El usuario ya está registrado. <a href='../register.php'>Intenta con otro nombre de usuario</a>";
         } else {
+            // Hashear la contraseña antes de guardarla
+            $hashed_password = password_hash($contra, PASSWORD_DEFAULT);
+
             // Insertar datos en la tabla USUARIO
             $sql_insert = "INSERT INTO USUARIO (fecha_nacimiento, nombre, apellidos, usuario, contra)
                            VALUES (?, ?, ?, ?, ?)";
             $stmt_insert = $conn->prepare($sql_insert);
-            $stmt_insert->bind_param("sssss", $fecha_nacimiento, $nombre, $apellidos, $usuario, $contra);
+            $stmt_insert->bind_param("sssss", $fecha_nacimiento, $nombre, $apellidos, $usuario, $hashed_password);
 
             if ($stmt_insert->execute()) {
                 $response_message = "Registro exitoso. <a href='../index.php'>Inicia sesión aquí</a>";
@@ -110,6 +113,27 @@ $conn->close();
         .response-container a:hover {
             color: #e67e22;
         }
+
+        /* Inputs y botón */
+        input, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            background-color: #f39c12;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -117,7 +141,6 @@ $conn->close();
         <?php if (!empty($response_message)): ?>
             <?php echo $response_message; ?>
         <?php else: ?>
-            <!-- Aquí puedes mostrar el formulario de registro si lo deseas -->
             <h2>Registro de Usuario</h2>
             <form method="POST" action="">
                 <input type="text" name="nombre" placeholder="Nombre" required><br>

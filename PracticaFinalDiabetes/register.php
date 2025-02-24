@@ -9,6 +9,10 @@
 <body>
     <div class="login-container">
         <h2>Registro de Usuario</h2>
+        <?php if (isset($_GET['error'])): ?>
+            <p style="color: red;"><?php echo htmlspecialchars($_GET['error']); ?></p>
+        <?php endif; ?>
+
         <form action="paginas/register_process.php" method="POST">
             <div class="input-group">
                 <label for="nombre">Nombre:</label>
