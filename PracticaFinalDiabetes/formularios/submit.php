@@ -34,23 +34,16 @@ $correccion    = $_POST['correccion'];
 $glucosa_hipo  = $_POST['glucosa_hipo'];
 $hora_hipo     = $_POST['hora_hipo'];
 
-// Verificar que los campos obligatorios estén llenos.
-// En este ejemplo, consideramos obligatorios: fecha, tipo_comida, gl_1h, gl_2h, raciones, insulina,
-// y los campos de HIPO (glucosa_hipo y hora_hipo). Los campos de HIPER son opcionales.
-if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina) ||
-    empty($glucosa_hipo) || empty($hora_hipo)) {
-        
-        header("Location: formulario.php?error=1");
-        exit();
+// Verificar campos obligatorios
+if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina)) {
+    header("Location: formulario.php?error=1");
+    exit();
 }
 
 // Obtener el ID del usuario autenticado desde la sesión
 $id_usu = $_SESSION['id_usu'];
 
-/* 
-  Primero, nos aseguramos de que exista un registro en CONTROL_GLUCOSA para la fecha y el usuario.
-  Esto es necesario para cumplir la restricción foránea de la tabla COMIDA.
-*/
+// Verificar existencia de registro en CONTROL_GLUCOSA
 $sql_check_control = "SELECT * FROM CONTROL_GLUCOSA WHERE fecha = '$fecha' AND id_usu = $id_usu";
 $result_check_control = $conn->query($sql_check_control);
 if ($result_check_control->num_rows == 0) {
@@ -61,17 +54,13 @@ if ($result_check_control->num_rows == 0) {
     }
 }
 
-/* 
-  Verificamos si ya existe un registro en COMIDA para esta combinación de fecha, tipo_comida y usuario.
-  Dado que la columna generada 'fecha_comida' se construye como CONCAT(fecha, '-', tipo_comida)
-  y se definió un índice único sobre (fecha_comida, id_usu), no se permitirá duplicidad.
-*/
+// Verificar existencia de registro en COMIDA
 $sql_check_comida = "SELECT * FROM COMIDA 
                      WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
 $result_check_comida = $conn->query($sql_check_comida);
 
 if ($result_check_comida->num_rows == 0) {
-    // Si no existe, insertamos el registro en COMIDA.
+    // Insertar en COMIDA si no existe
     $sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
                    VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
     if (!$conn->query($sql_comida)) {
@@ -84,22 +73,20 @@ if ($result_check_comida->num_rows == 0) {
     $color_mensaje = "red";
 }
 
-/* 
-  Inserción en HIPERGLUCEMIA solo si se han completado sus campos (considerados opcionales).
-*/
+// Inserción condicional según Hiper o Hipo
 if (!empty($glucosa_hiper) && !empty($hora_hiper) && !empty($correccion)) {
     $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
                   VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
     $conn->query($sql_hiper);
+} elseif (!empty($glucosa_hipo) && !empty($hora_hipo)) {
+    $sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
+                 VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
+    $conn->query($sql_hipo);
 }
-
-/* Inserción en HIPOGLUCEMIA */
-$sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
-             VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
-$conn->query($sql_hipo);
 
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
