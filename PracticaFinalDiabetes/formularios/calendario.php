@@ -1,16 +1,15 @@
 <?php
 session_start(); 
-// Verificar que el usuario esté autenticado
+
 if (!isset($_SESSION['id_usu'])) {
     die("Usuario no autenticado.");
 }
 $id_usu = intval($_SESSION['id_usu']);
 
-// Conexión a la base de datos usando PDO
 $host = "localhost";
 $dbname = "diabetesdb";
-$user = "root"; // Cambiar si es necesario
-$password = ""; // Cambiar si es necesario
+$user = "root"; 
+$password = ""; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $user, $password);
@@ -19,15 +18,12 @@ try {
     die("Error de conexión: " . $e->getMessage());
 }
 
-// Obtener el mes y año actual o vía GET
 $mes = isset($_GET['mes']) ? $_GET['mes'] : date('m');
 $anio = isset($_GET['anio']) ? $_GET['anio'] : date('Y');
 
-// Calcular el primer y último día del mes
 $primerDia = date('Y-m-01', strtotime("$anio-$mes-01"));
 $ultimoDia = date('Y-m-t', strtotime("$anio-$mes-01"));
 
-// Consultar eventos filtrando por el id del usuario
 $sql = "SELECT fecha, 'Glucosa' AS tipo FROM CONTROL_GLUCOSA WHERE id_usu = $id_usu
         UNION 
         SELECT fecha, 'Comida' FROM COMIDA WHERE id_usu = $id_usu
@@ -41,7 +37,6 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $eventos[$row['fecha']][] = $row['tipo'];
 }
 
-// Calcular el día de la semana del primer día y la cantidad de días del mes
 $diaSemana = date('N', strtotime($primerDia));
 $diasMes = date('t', strtotime($primerDia));
 ?>
@@ -181,23 +176,23 @@ $diasMes = date('t', strtotime($primerDia));
         </tr>
         <tr>
             <?php
-            // Espacios vacíos antes del primer día
+            
             for ($i = 1; $i < $diaSemana; $i++) {
                 echo "<td></td>";
             }
-            // Días del mes
+            
             for ($dia = 1; $dia <= $diasMes; $dia++) {
                 $fecha_actual = "$anio-$mes-" . str_pad($dia, 2, "0", STR_PAD_LEFT);
                 echo "<td>";
-                // Enlace a datos.php pasando la fecha
+               
                 echo "<a href='datos.php?fecha=$fecha_actual'><strong>$dia</strong></a>";
                 echo "</td>";
-                // Salto de línea al finalizar la semana
+               
                 if ((($dia + $diaSemana - 1) % 7) == 0) {
                     echo "</tr><tr>";
                 }
             }
-            // Rellenar celdas vacías después del último día
+            
             while ((($dia + $diaSemana - 1) % 7) != 1) {
                 echo "<td></td>";
                 $dia++;

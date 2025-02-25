@@ -1,49 +1,41 @@
 <?php
-// Iniciar la sesión
 session_start();
 
-// Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION['id_usu'])) {
     die("Por favor, inicia sesión para ver esta página.");
 }
 
-// Establecer la conexión con la base de datos
 $pdo = new PDO('mysql:host=localhost;dbname=diabetesdb', 'root', '');
 
-// Inicializar la variable $promedio_glucosa_lenta
 $promedio_glucosa_lenta = null;
 
-// Preparar la consulta SQL
 $sql = "SELECT DAY(fecha) AS dia, lenta FROM CONTROL_GLUCOSA WHERE MONTH(fecha) = :mes AND YEAR(fecha) = :anio AND id_usu = :id_usu";
 $stmt = $pdo->prepare($sql);
 
-// Ejecutar la consulta con los parámetros de mes, año y id_usu
-$mes = isset($_GET['mes']) ? $_GET['mes'] : date('m');  // Mes actual por defecto
-$anio = isset($_GET['anio']) ? $_GET['anio'] : date('Y'); // Año actual por defecto
-$id_usu = $_SESSION['id_usu']; // ID del usuario que ha iniciado sesión
+
+$mes = isset($_GET['mes']) ? $_GET['mes'] : date('m');  
+$anio = isset($_GET['anio']) ? $_GET['anio'] : date('Y'); 
+$id_usu = $_SESSION['id_usu']; 
 $stmt->bindParam(':mes', $mes);
 $stmt->bindParam(':anio', $anio);
 $stmt->bindParam(':id_usu', $id_usu);
 $stmt->execute();
 
-// Obtener los resultados
+
 $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Verificar si hay datos y generar la gráfica
 if (!$resultado) {
     $mensaje = "No hay datos disponibles para el mes y año seleccionados.";
 } else {
-    // Crear arrays para los datos de la gráfica
-    $dias = range(1, 31);  // Asegura que se muestren los 31 días del mes
-    $niveles_glucosa = array_fill(0, 31, null);  // Inicializa todos los valores de glucosa como null
 
-    // Llenar los datos de glucosa en el array correspondiente
+    $dias = range(1, 31);  
+    $niveles_glucosa = array_fill(0, 31, null);  
+
     foreach ($resultado as $row) {
-        $dia = $row['dia'] - 1;  // Los días empiezan desde 1, pero los arrays comienzan desde 0
-        $niveles_glucosa[$dia] = $row['lenta'];  // Asignar el valor de glucosa para ese día
+        $dia = $row['dia'] - 1;  
+        $niveles_glucosa[$dia] = $row['lenta'];  
     }
 
-    // Calcular el promedio de glucosa lenta
     $total_lenta = 0;
     $dias_con_datos = 0;
     foreach ($resultado as $row) {
@@ -192,7 +184,6 @@ if (!$resultado) {
 <div class="login-container">
     <h2>Gráfica de Niveles de Glucosa</h2>
 
-    <!-- Formulario para seleccionar mes y año -->
     <form method="GET" action="estadisticas.php">
         <div class="input-group">
             <label for="mes">Mes:</label>
@@ -205,14 +196,12 @@ if (!$resultado) {
         <button type="submit" class="login-btn">📊 Ver Estadísticas</button>
     </form>
 
-    <!-- Mostrar el promedio de glucosa -->
     <?php if ($promedio_glucosa_lenta !== null): ?>
         <div class="promedio-glucosa">
             Promedio de Glucosa Lenta: <?php echo number_format($promedio_glucosa_lenta, 2); ?> mg/dL
         </div>
     <?php endif; ?>
 
-    <!-- Mostrar la gráfica -->
     <?php if ($resultado): ?>
         <canvas id="glucosaChart"></canvas>
         <script>
@@ -220,10 +209,10 @@ if (!$resultado) {
             const glucosaChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: <?php echo json_encode($dias); ?>, // Días del mes
+                    labels: <?php echo json_encode($dias); ?>, 
                     datasets: [{
                         label: 'Nivel de Glucosa',
-                        data: <?php echo json_encode($niveles_glucosa); ?>, // Niveles de glucosa
+                        data: <?php echo json_encode($niveles_glucosa); ?>, 
                         backgroundColor: '#f39c12',
                         borderColor: '#e67e22',
                         borderWidth: 1

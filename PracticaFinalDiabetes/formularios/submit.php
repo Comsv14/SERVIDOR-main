@@ -1,12 +1,10 @@
 <?php
-session_start(); // Iniciar sesión
+session_start(); 
 
-// Verificar si el usuario está autenticado
 if (!isset($_SESSION['id_usu'])) {
     die("Error: Usuario no autenticado.");
 }
 
-// Conexión a la base de datos
 $host = "localhost";
 $dbname = "diabetesdb";
 $username = "root";  
@@ -14,12 +12,10 @@ $password = "";
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
-// Verificar conexión
 if ($conn->connect_error) {
     die("Error de conexión: " . $conn->connect_error);
 }
 
-// Obtener los datos del formulario
 $fecha         = $_POST['fecha'];
 $deporte       = $_POST['deporte'];
 $lenta         = $_POST['lenta'];
@@ -34,16 +30,13 @@ $correccion    = $_POST['correccion'] ?? null;
 $glucosa_hipo  = $_POST['glucosa_hipo'] ?? null;
 $hora_hipo     = $_POST['hora_hipo'] ?? null;
 
-// Verificar campos obligatorios
 if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina)) {
     header("Location: formulario.php?error=1");
     exit();
 }
 
-// Obtener el ID del usuario autenticado desde la sesión
 $id_usu = $_SESSION['id_usu'];
 
-// Verificar existencia de registro en CONTROL_GLUCOSA
 $sql_check_control = "SELECT * FROM CONTROL_GLUCOSA WHERE fecha = '$fecha' AND id_usu = $id_usu";
 $result_check_control = $conn->query($sql_check_control);
 if ($result_check_control->num_rows == 0) {
@@ -54,13 +47,11 @@ if ($result_check_control->num_rows == 0) {
     }
 }
 
-// Verificar existencia de registro en COMIDA
 $sql_check_comida = "SELECT * FROM COMIDA 
                      WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
 $result_check_comida = $conn->query($sql_check_comida);
 
 if ($result_check_comida->num_rows == 0) {
-    // Insertar en COMIDA si no existe
     $sql_comida = "INSERT INTO COMIDA (tipo_comida, gl_1h, gl_2h, raciones, insulina, fecha, id_usu) 
                    VALUES ('$tipo_comida', $gl_1h, $gl_2h, $raciones, $insulina, '$fecha', $id_usu)";
     if (!$conn->query($sql_comida)) {
@@ -73,7 +64,6 @@ if ($result_check_comida->num_rows == 0) {
     $color_mensaje = "red";
 }
 
-// Verificar y registrar Hiperglucemia si se han proporcionado datos
 if (!empty($glucosa_hiper) && !empty($hora_hiper) && !empty($correccion)) {
     $sql_check_hiper = "SELECT * FROM HIPERGLUCEMIA WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
     $result_check_hiper = $conn->query($sql_check_hiper);
@@ -90,7 +80,6 @@ if (!empty($glucosa_hiper) && !empty($hora_hiper) && !empty($correccion)) {
     }
 }
 
-// Verificar y registrar Hipoglucemia si se han proporcionado datos
 if (!empty($glucosa_hipo) && !empty($hora_hipo)) {
     $sql_check_hipo = "SELECT * FROM HIPOGLUCEMIA WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
     $result_check_hipo = $conn->query($sql_check_hipo);

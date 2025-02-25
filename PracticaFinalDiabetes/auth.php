@@ -5,16 +5,16 @@ include 'conexion.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Verificar conexión
+
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-// Recoger datos del formulario
+
 $usuario = trim($_POST['usuario']);
 $contra = trim($_POST['contra']);
 
-// Consulta para verificar las credenciales
+
 $sql = "SELECT id_usu, contra FROM USUARIO WHERE usuario = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $usuario);
@@ -25,12 +25,10 @@ if ($result->num_rows > 0) {
     $usuario_data = $result->fetch_assoc();
     $hash_password = $usuario_data['contra'];
 
-    // Verificar la contraseña hasheada
     if (password_verify($contra, $hash_password)) {
         $_SESSION['usuario'] = $usuario;
         $_SESSION['id_usu'] = $usuario_data['id_usu'];
 
-        // Redirigir al dashboard o página principal
         header("Location: formularios/escoger.php");
         exit();
     } else {

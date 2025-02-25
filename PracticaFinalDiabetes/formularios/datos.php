@@ -1,24 +1,20 @@
 <?php
-// Inicia la sesión para acceder al id_usu
 session_start();
 
-// Verifica si el usuario está logueado
 if (!isset($_SESSION['id_usu'])) {
     die("No estás logueado.");
 }
 
-$id_usu = $_SESSION['id_usu'];  // Obtén el 'id_usu' desde la sesión
+$id_usu = $_SESSION['id_usu'];  
 
-// Conexión a la base de datos
+
 $conexion = new mysqli("localhost", "root", "", "diabetesdb");
 if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error);
 }
 
-// Obtener la fecha desde el GET o POST
-$fecha = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d');  // Asume que la fecha se pasa por GET, si no, usa la fecha actual
+$fecha = isset($_GET['fecha']) ? $_GET['fecha'] : date('Y-m-d'); 
 
-// Consulta SQL ajustada para usar el id_usu
 $sql = "SELECT 
             c.fecha, 
             c.deporte, 
@@ -40,15 +36,14 @@ $sql = "SELECT
         LEFT JOIN HIPERGLUCEMIA g ON cm.tipo_comida = g.tipo_comida AND cm.fecha = g.fecha AND cm.id_usu = g.id_usu
         WHERE c.fecha = '$fecha' AND c.id_usu = $id_usu";
 
-// Ejecutar la consulta
 $resultado = $conexion->query($sql);
-// Comprobar si hay resultados
+
 if ($resultado->num_rows > 0) {
     echo "<div class='contenedor'>";
     echo "<h2>Datos del $fecha</h2>";
     echo "<div class='tabla-div'>";
     
-    // Tabla 1 - Deporte e Insulina Lenta
+    
     echo "<table>";
     echo "<tr><th>Fecha</th><th>Deporte</th><th>Insulina Lenta</th></tr>";
     while ($fila = $resultado->fetch_assoc()) {
@@ -60,13 +55,11 @@ if ($resultado->num_rows > 0) {
     }
     echo "</table>";
 
-    // Tabla 2 - Comida y Glucosa
     echo "<table>";
 echo "<tr><th>Tipo de Comida</th><th>Glucosa 1h</th><th>Glucosa 2h</th><th>Raciones</th><th>Insulina Comida</th><th>Glucosa Hipo</th><th>Hora Hipo</th><th>Glucosa Hiper</th><th>Hora Hiper</th><th>Corrección Hiper</th></tr>";
-$resultado->data_seek(0); // Restablecer el puntero para la segunda tabla
+$resultado->data_seek(0); 
 
 while ($fila = $resultado->fetch_assoc()) {
-    // Determinar el color del texto según el tipo de comida
     $colorTipoComida = match (strtolower($fila['tipo_comida'])) {
         'desayuno' => 'gold',        
         'comida' => 'orange',        
@@ -101,7 +94,6 @@ echo "</table>";
     echo '<a class="calendar-btn" href="calendario.php">📅 Calendario</a>';
 }
 
-// Cerrar la conexión
 $conexion->close();
 ?>
 
@@ -123,8 +115,8 @@ $conexion->close();
         backdrop-filter: blur(10px);
         padding: 40px;
         border-radius: 15px;
-        width: 95%;  /* Ancho más grande para ajustarse */
-        max-width: 1500px; /* Aumento el máximo */
+        width: 95%;  
+        max-width: 1500px; 
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
         text-align: center;
         overflow: hidden;
@@ -142,7 +134,7 @@ $conexion->close();
         width: 100%;
         border-collapse: collapse;
         margin-top: 30px;
-        word-wrap: break-word; /* Permite que el contenido largo se divida */
+        word-wrap: break-word; 
     }
 
     th, td {
@@ -193,7 +185,7 @@ $conexion->close();
     }
 
     .tabla-div table {
-        width: 48%; /* Para que las tablas se dividan igualmente */
+        width: 48%; 
     }
     .calendar-btn {
     margin-top:  20px;
@@ -210,7 +202,7 @@ $conexion->close();
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    text-decoration: none; /* Elimina el subrayado del enlace */
+    text-decoration: none; 
 }
 
 .calendar-btn:hover {

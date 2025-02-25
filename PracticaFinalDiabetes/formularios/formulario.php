@@ -183,7 +183,7 @@
 </head>
 <body>
     <div class="form-container">
-        <!-- Mostrar mensaje de error si falta algún campo -->
+
         <?php
         if (isset($_GET['error'])) {
             echo "<p class='error-message'>";
@@ -209,7 +209,7 @@
 
         <h1>Registro de Datos para la Diabetes</h1>
         <form action="submit.php" method="POST">
-            <!-- Control de Glucosa -->
+           
             <div class="form-section">
                 <h2>Control de Glucosa</h2>
                 <div class="input-group">
@@ -226,7 +226,7 @@
                 </div>
             </div>
 
-            <!-- Comida -->
+            
             <div class="form-section">
                 <h2>Registro de Comida</h2>
                 <div class="input-group">
@@ -256,7 +256,7 @@
                 </div>
             </div>
 
-            <!-- Elección de Hipo o Hiper -->
+            
             <div class="form-section">
                 <h2>Tipo de Evento</h2>
                 <div class="input-group">
@@ -269,7 +269,7 @@
                 </div>
             </div>
 
-            <!-- Hiperglucemia -->
+            
             <div class="event-section" id="hiperglucemia">
                 <h2>Hiperglucemia</h2>
                 <div class="input-group">
@@ -286,7 +286,7 @@
                 </div>
             </div>
 
-            <!-- Hipoglucemia -->
+            
             <div class="event-section" id="hipoglucemia">
                 <h2>Hipoglucemia</h2>
                 <div class="input-group">
@@ -299,7 +299,7 @@
                 </div>
             </div>
 
-            <!-- Botones -->
+            
             <div class="button-container">
                 <button type="submit" class="submit-btn">📤 Enviar Datos</button>
                 <button type="button" class="choose-btn" onclick="window.location.href='escoger.php'">📋 Menú Principal</button>
@@ -308,7 +308,6 @@
     </div>
 
     <script>
-        // Funcionalidad para seleccionar tipo de comida
         document.querySelectorAll('.food-option').forEach(button => {
             button.addEventListener('click', () => {
                 document.querySelectorAll('.food-option').forEach(btn => btn.style.backgroundColor = '#f39c12');
@@ -316,8 +315,6 @@
                 document.getElementById('tipo_comida').value = button.dataset.value;
             });
         });
-
-        // Funcionalidad para mostrar el formulario de Hipoglucemia o Hiperglucemia
         document.getElementById('evento').addEventListener('change', function() {
             const selectedEvent = this.value;
             document.getElementById('hiperglucemia').classList.toggle('active', selectedEvent === 'hiperglucemia');
