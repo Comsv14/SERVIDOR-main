@@ -9,8 +9,8 @@ if (!isset($_SESSION['id_usu'])) {
 // Conexión a la base de datos
 $host = "localhost";
 $dbname = "diabetesdb";
-$username = "root";  // Cambia esto si tienes otro usuario
-$password = "";      // Cambia esto si tienes contraseña
+$username = "root";  
+$password = "";      
 
 $conn = new mysqli($host, $username, $password, $dbname);
 
@@ -20,19 +20,19 @@ if ($conn->connect_error) {
 }
 
 // Obtener los datos del formulario
-$fecha       = $_POST['fecha'];
-$deporte     = $_POST['deporte'];
-$lenta       = $_POST['lenta'];
-$tipo_comida = $_POST['tipo_comida'];
-$gl_1h       = $_POST['gl_1h'];
-$gl_2h       = $_POST['gl_2h'];
-$raciones    = $_POST['raciones'];
-$insulina    = $_POST['insulina'];
-$glucosa_hiper = $_POST['glucosa_hiper'];
-$hora_hiper    = $_POST['hora_hiper'];
-$correccion    = $_POST['correccion'];
-$glucosa_hipo  = $_POST['glucosa_hipo'];
-$hora_hipo     = $_POST['hora_hipo'];
+$fecha         = $_POST['fecha'];
+$deporte       = $_POST['deporte'];
+$lenta         = $_POST['lenta'];
+$tipo_comida   = $_POST['tipo_comida'];
+$gl_1h         = $_POST['gl_1h'];
+$gl_2h         = $_POST['gl_2h'];
+$raciones      = $_POST['raciones'];
+$insulina      = $_POST['insulina'];
+$glucosa_hiper = $_POST['glucosa_hiper'] ?? null;
+$hora_hiper    = $_POST['hora_hiper'] ?? null;
+$correccion    = $_POST['correccion'] ?? null;
+$glucosa_hipo  = $_POST['glucosa_hipo'] ?? null;
+$hora_hipo     = $_POST['hora_hipo'] ?? null;
 
 // Verificar campos obligatorios
 if (empty($fecha) || empty($tipo_comida) || empty($gl_1h) || empty($gl_2h) || empty($raciones) || empty($insulina)) {
@@ -73,15 +73,38 @@ if ($result_check_comida->num_rows == 0) {
     $color_mensaje = "red";
 }
 
-// Inserción condicional según Hiper o Hipo
+// Verificar y registrar Hiperglucemia si se han proporcionado datos
 if (!empty($glucosa_hiper) && !empty($hora_hiper) && !empty($correccion)) {
-    $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
-                  VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
-    $conn->query($sql_hiper);
-} elseif (!empty($glucosa_hipo) && !empty($hora_hipo)) {
-    $sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
-                 VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
-    $conn->query($sql_hipo);
+    $sql_check_hiper = "SELECT * FROM HIPERGLUCEMIA WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
+    $result_check_hiper = $conn->query($sql_check_hiper);
+
+    if ($result_check_hiper->num_rows == 0) {
+        $sql_hiper = "INSERT INTO HIPERGLUCEMIA (glucosa, hora, correccion, tipo_comida, fecha, id_usu) 
+                      VALUES ($glucosa_hiper, '$hora_hiper', $correccion, '$tipo_comida', '$fecha', $id_usu)";
+        if (!$conn->query($sql_hiper)) {
+            die("Error en HIPERGLUCEMIA: " . $conn->error);
+        }
+    } else {
+        header("Location: formulario.php?error=hiper_existente");
+        exit();
+    }
+}
+
+// Verificar y registrar Hipoglucemia si se han proporcionado datos
+if (!empty($glucosa_hipo) && !empty($hora_hipo)) {
+    $sql_check_hipo = "SELECT * FROM HIPOGLUCEMIA WHERE fecha = '$fecha' AND tipo_comida = '$tipo_comida' AND id_usu = $id_usu";
+    $result_check_hipo = $conn->query($sql_check_hipo);
+
+    if ($result_check_hipo->num_rows == 0) {
+        $sql_hipo = "INSERT INTO HIPOGLUCEMIA (glucosa, hora, tipo_comida, fecha, id_usu) 
+                     VALUES ($glucosa_hipo, '$hora_hipo', '$tipo_comida', '$fecha', $id_usu)";
+        if (!$conn->query($sql_hipo)) {
+            die("Error en HIPOGLUCEMIA: " . $conn->error);
+        }
+    } else {
+        header("Location: formulario.php?error=hipo_existente");
+        exit();
+    }
 }
 
 $conn->close();
@@ -106,6 +129,7 @@ $conn->close();
             align-items: center;
             height: 100vh;
             background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
         }
         .login-container {
             background: rgba(255, 255, 255, 0.1);
@@ -115,7 +139,6 @@ $conn->close();
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             width: 350px;
             text-align: center;
-            color: white;
         }
         .login-container a {
             color: #f39c12;
@@ -140,7 +163,7 @@ $conn->close();
     <div class="login-container">
         <h2>Resultado del Envío</h2>
         <p><?php echo $mensaje; ?></p>
-        <a href="escoger.php">Volver al formulario</a>
+        <a href="formulario.php">Volver al formulario</a>
     </div>
 </body>
 </html>

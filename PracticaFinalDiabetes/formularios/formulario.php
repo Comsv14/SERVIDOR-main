@@ -143,13 +143,13 @@
 
         /* Cambio para la selección de Evento */
         .input-group select {
-            background: rgba(255, 255, 255, 0.2); /* Fondo oscuro como la página */
-            color: #f39c12; /* Color naranja para el texto */
+            background: rgba(255, 255, 255, 0.2);
+            color: #f39c12;
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .input-group select:focus {
-            border-color: #f39c12; /* Resalta con naranja cuando está en foco */
+            border-color: #f39c12;
         }
 
         .event-section {
@@ -166,23 +166,47 @@
 
         /* Estilo para las secciones de Hipoglucemia e Hiperglucemia */
         .event-section {
-            background: transparent; /* Fondo transparente */
+            background: transparent;
             border-radius: 5px;
             padding: 15px;
             margin-top: 15px;
             color: white;
         }
 
+        /* Estilo para errores */
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="form-container">
         <!-- Mostrar mensaje de error si falta algún campo -->
         <?php
-        if (isset($_GET['error']) && $_GET['error'] == 1) {
-            echo "<p style='color: red; text-align: center;'>Error: Todos los campos obligatorios deben ser completados.</p>";
+        if (isset($_GET['error'])) {
+            echo "<p class='error-message'>";
+            switch ($_GET['error']) {
+                case '1':
+                    echo "Error: Todos los campos obligatorios deben ser completados.";
+                    break;
+                case 'hiper_existente':
+                    echo "Ya existe un registro de hiperglucemia para esa fecha y tipo de comida.";
+                    break;
+                case 'hipo_existente':
+                    echo "Ya existe un registro de hipoglucemia para esa fecha y tipo de comida.";
+                    break;
+                case 'comida_existente':
+                    echo "Ya existe un registro para esa comida en esa fecha.";
+                    break;
+                default:
+                    echo "Error desconocido. Intente nuevamente.";
+            }
+            echo "</p>";
         }
         ?>
+
         <h1>Registro de Datos para la Diabetes</h1>
         <form action="submit.php" method="POST">
             <!-- Control de Glucosa -->
@@ -296,19 +320,8 @@
         // Funcionalidad para mostrar el formulario de Hipoglucemia o Hiperglucemia
         document.getElementById('evento').addEventListener('change', function() {
             const selectedEvent = this.value;
-            const hiperglucemia = document.getElementById('hiperglucemia');
-            const hipoglucemia = document.getElementById('hipoglucemia');
-
-            if (selectedEvent === 'hiperglucemia') {
-                hiperglucemia.classList.add('active');
-                hipoglucemia.classList.remove('active');
-            } else if (selectedEvent === 'hipoglucemia') {
-                hipoglucemia.classList.add('active');
-                hiperglucemia.classList.remove('active');
-            } else {
-                hipoglucemia.classList.remove('active');
-                hiperglucemia.classList.remove('active');
-            }
+            document.getElementById('hiperglucemia').classList.toggle('active', selectedEvent === 'hiperglucemia');
+            document.getElementById('hipoglucemia').classList.toggle('active', selectedEvent === 'hipoglucemia');
         });
     </script>
 </body>
