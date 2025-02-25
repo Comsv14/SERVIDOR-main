@@ -62,23 +62,36 @@ if ($resultado->num_rows > 0) {
 
     // Tabla 2 - Comida y Glucosa
     echo "<table>";
-    echo "<tr><th>Tipo de Comida</th><th>Glucosa 1h</th><th>Glucosa 2h</th><th>Raciones</th><th>Insulina Comida</th><th>Glucosa Hipo</th><th>Hora Hipo</th><th>Glucosa Hiper</th><th>Hora Hiper</th><th>Corrección Hiper</th></tr>";
-    $resultado->data_seek(0); // Restablecer el puntero para la segunda tabla
-    while ($fila = $resultado->fetch_assoc()) {
-        echo "<tr>
-                <td>{$fila['tipo_comida']}</td>
-                <td>{$fila['gl_1h']} mg/dL</td>
-                <td>{$fila['gl_2h']} mg/dL</td>
-                <td>{$fila['raciones']}</td>
-                <td>{$fila['insulina_comida']} U</td>
-                <td>{$fila['glucosa_hipo']} mg/dL</td>
-                <td>{$fila['hora_hipo']}</td>
-                <td>{$fila['glucosa_hiper']} mg/dL</td>
-                <td>{$fila['hora_hiper']}</td>
-                <td>{$fila['correccion_hiper']} U</td>
-            </tr>";
-    }
-    echo "</table>";
+echo "<tr><th>Tipo de Comida</th><th>Glucosa 1h</th><th>Glucosa 2h</th><th>Raciones</th><th>Insulina Comida</th><th>Glucosa Hipo</th><th>Hora Hipo</th><th>Glucosa Hiper</th><th>Hora Hiper</th><th>Corrección Hiper</th></tr>";
+$resultado->data_seek(0); // Restablecer el puntero para la segunda tabla
+
+while ($fila = $resultado->fetch_assoc()) {
+    // Determinar el color del texto según el tipo de comida
+    $colorTipoComida = match (strtolower($fila['tipo_comida'])) {
+        'desayuno' => 'gold',        
+        'comida' => 'orange',        
+        'cena' => 'lightcoral',      
+        default => 'white',          
+    };
+    
+    
+
+    echo "<tr>
+            <td style='color: {$colorTipoComida}; font-weight: bold;'>{$fila['tipo_comida']}</td>
+            <td>{$fila['gl_1h']} mg/dL</td>
+            <td>{$fila['gl_2h']} mg/dL</td>
+            <td>{$fila['raciones']}</td>
+            <td>{$fila['insulina_comida']} U</td>
+            <td>{$fila['glucosa_hipo']} mg/dL</td>
+            <td>{$fila['hora_hipo']}</td>
+            <td>{$fila['glucosa_hiper']} mg/dL</td>
+            <td>{$fila['hora_hiper']}</td>
+            <td>{$fila['correccion_hiper']} U</td>
+        </tr>";
+}
+echo "</table>";
+
+    
     
     echo "</div>";
     echo "</div>";
