@@ -15,21 +15,29 @@ $mensaje = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $respuesta = trim($_POST['respuesta']);
 
-    // Obtener la solución correcta del día (2024-12-12)
-    $sql = "SELECT solucion FROM solucion WHERE fecha = '$fecha'";
-    $resultado = $conexion->query($sql);
+    // Obtener la solución correcta del día
+    $sql = "SELECT solucion FROM solucion WHERE fecha = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("s", $fecha);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
     $fila = $resultado->fetch_assoc();
 
     if ($fila) {
         $solucionCorrecta = trim($fila['solucion']);
 
-        // Guardar la respuesta del usuario en la tabla 'respuestas'
-        $sql_insert = "INSERT INTO respuestas (fecha, login, hora, respuesta) VALUES ('$fecha', '$login', '$hora', '$respuesta')";
-        $conexion->query($sql_insert);
+        // Guardar la respuesta en la tabla respuestas
+        $sql_insert = "INSERT INTO respuestas (fecha, login, hora, respuesta) VALUES (?, ?, ?, ?)";
+        $stmt_insert = $conexion->prepare($sql_insert);
+        $stmt_insert->bind_param("ssss", $fecha, $login, $hora, $respuesta);
+        $stmt_insert->execute();
 
-        // Comparar la respuesta con la solución correcta
+        // Comparar con la solución correcta
         if (strcasecmp($respuesta, $solucionCorrecta) == 0) {
-            $conexion->query("UPDATE jugador SET puntos = puntos + 1 WHERE login = '$login'");
+            $sql_update = "UPDATE jugador SET puntos = puntos + 1 WHERE login = ?";
+            $stmt_update = $conexion->prepare($sql_update);
+            $stmt_update->bind_param("s", $login);
+            $stmt_update->execute();
             $mensaje = "✅ Respuesta correcta. ¡Has ganado 1 punto!";
         } else {
             $mensaje = "❌ Respuesta incorrecta. Inténtalo de nuevo.";
@@ -51,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php if ($mensaje) echo "<p>$mensaje</p>"; ?>
 
     <form method="POST" action="">
-        <label for="respuesta">Introduce tu solución:</label><br>
+        <label>Introduce tu solución:</label><br>
         <input type="text" name="respuesta" required><br><br>
         <input type="submit" value="Enviar">
     </form>

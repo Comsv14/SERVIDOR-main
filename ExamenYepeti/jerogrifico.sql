@@ -6,9 +6,9 @@
 -- Tiempo de generación: 15-02-2024 a las 21:34:40
 -- Versión del servidor: 10.4.25-MariaDB
 -- Versión de PHP: 8.1.10
-CREATE DATABASE IF NOT EXISTS `JEROGLIFICO`
-  DEFAULT CHARACTER SET utf8
-  DEFAULT COLLATE utf8_spanish_ci;
+CREATE DATABASE IF NOT EXISTS `jerogrifico` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+USE `jerogrifico`;
+
   
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;

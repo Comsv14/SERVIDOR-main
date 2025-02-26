@@ -1,36 +1,32 @@
 <?php
-// index.php
 session_start();
+require 'conexion.php';
 
-// Conexión a la base de datos
-$host = 'localhost';
-$db = 'JEROGLIFICO';
-$user = 'root';
-$pass = ''; // Ajustar según configuración
-
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
-}
-
-// Procesamiento del formulario de login
 if (isset($_POST['login']) && isset($_POST['clave'])) {
-    $login = $_POST['login'];
-    $clave = $_POST['clave'];
-    
-    // Consulta preparada para evitar inyección SQL
-    $stmt = $conn->prepare("SELECT * FROM jugador WHERE login = ? AND clave = ?");
-    $stmt->bind_param("ss", $login, $clave);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($result->num_rows == 1) {
-        // Login correcto
-        $_SESSION['login'] = $login;
-        header("Location: inicio.php");
-        exit();
-    } else {
-        $error = "Login o clave incorrectos.";
+    $login = trim($_POST['login']);
+    $clave = trim($_POST['clave']);
+
+    try {
+        $stmt = $conn->prepare("SELECT nombre, login FROM jugador WHERE login = :login AND clave = :clave");
+        $stmt->execute([
+            ':login' => $login,
+            ':clave' => $clave
+        ]);
+
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            $_SESSION['usuario'] = [
+                'nombre' => $usuario['nombre'],
+                'login' => $usuario['login']
+            ];
+            header("Location: inicio.php");
+            exit();
+        } else {
+            $error = "Login o clave incorrectos.";
+        }
+    } catch (PDOException $e) {
+        die("Error en la consulta: " . $e->getMessage());
     }
 }
 ?>
@@ -43,7 +39,7 @@ if (isset($_POST['login']) && isset($_POST['clave'])) {
 <body>
     <h1>Iniciar sesión</h1>
     <?php if(isset($error)) { echo "<p style='color:red;'>$error</p>"; } ?>
-    <form method="post" action="">
+    <form method="post">
         <label for="login">Login:</label>
         <input type="text" name="login" id="login" required>
         <br>
