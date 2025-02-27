@@ -42,11 +42,15 @@ if (!$result) die("Fatal Error");
             <th></th>
         </tr>
         <?php
+            /**
+             * Se recorre el resultado de la consulta y se imprimen las filas de la tabla.
+             * La última columna contiene una barra azul cuyo ancho es proporcional a los puntos del jugador.
+             */
             while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 echo "<td>" . htmlspecialchars($row['Nombre']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['puntos']) . "</td>";
-                echo "<td><div class='bar' style='width: " . $row['puntos'] . "px;'></div></td>";
+                echo "<td><div class='bar' style='width: " . ($row['puntos']) . "px;'></div></td>"; // Se puede multiplicar por 2 para mejor visualización en puntos *2
                 echo "</tr>";
             }
         ?>
@@ -59,5 +63,6 @@ if (!$result) die("Fatal Error");
 </html>
 
 <?php
+    // Cerrar la conexión con la base de datos
     $conexion->close();
 ?>

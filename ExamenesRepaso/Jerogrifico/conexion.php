@@ -2,7 +2,7 @@
 $servidor = "localhost";
 $usuario = "root"; // Cambia esto si usas otro usuario
 $clave = ""; // Cambia esto si tienes una contraseña
-$base_datos = "jerogrifico"; // Nombre de la base en minúsculas
+$base_datos = "jeroglifico"; // Nombre de la base en minúsculas
 
 // Crear conexión
 $conexion = new mysqli($servidor, $usuario, $clave, $base_datos);

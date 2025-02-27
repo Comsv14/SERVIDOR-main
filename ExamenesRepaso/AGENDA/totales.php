@@ -3,7 +3,7 @@
     require_once 'login.php';
     $connection = new mysqli($hn, $un, $pw, $db);
     if ($connection->connect_error) die("Fatal Error");
-    $query = "
+    /*$query = "
     SELECT u.Codigo, u.Nombre, c.contactos AS contactos FROM usuarios u
     LEFT JOIN 
         (
@@ -14,9 +14,15 @@
     ON 
         u.Codigo = c.codusuario
     ";
+    LEFT JOIN IMPRIME AUNQUE NO SAQUE CONTACTO 
+*/
+    $query = "SELECT u.Codigo, u.Nombre, COUNT(c.codusuario) AS contactos
+    FROM usuarios u
+    INNER JOIN contactos c ON u.Codigo = c.codusuario
+    GROUP BY u.Codigo, u.Nombre;";
 
-    $result = $connection->query($query);
-    if (!$result) die("Fatal Error");
+        $result = $connection->query($query);
+            if (!$result) die("Fatal Error");
 ?>
 
 <!DOCTYPE html>
