@@ -14,6 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($resultado->num_rows == 1) {
         $_SESSION['login'] = $login;
+        $_SESSION['nombre'] = $resultado->fetch_assoc()['nombre'];
         header("Location: inicio.php");
         exit();
     } else {

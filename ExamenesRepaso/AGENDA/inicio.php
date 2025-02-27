@@ -1,21 +1,30 @@
 <?php
-    session_start();
-    if (isset($_POST['input'])) {
-        if ($_POST['input'] == "INCREMENTAR" && $_SESSION['contador']<4) {
-            $_SESSION['contador']++;
-        } else if ($_SESSION['contador']>=4) {
-            echo<<<_END
-                <meta http-equiv="refresh" content="0;URL='agenda.php'" />
-            _END;
-        } else {
-            echo<<<_END
-                <meta http-equiv="refresh" content="0;URL='agenda.php'" />
-            _END;
-        }
-    } else {
-        $_SESSION['contador'] = 0;
+session_start(); // Inicia la sesión para poder usar variables de sesión
+
+// Comprueba si se ha enviado un formulario con el campo 'input'
+if (isset($_POST['input'])) {
+    // Si se presiona "INCREMENTAR" y el contador es menor que 4, se incrementa
+    if ($_POST['input'] == "INCREMENTAR" && $_SESSION['contador'] < 4) {
+        $_SESSION['contador']++;
+    } 
+    // Si el contador es 4 o más, redirige a agenda.php
+    elseif ($_SESSION['contador'] >= 4) {
+        header("Location: agenda.php");
+        exit(); // Se usa exit() para detener la ejecución después de la redirección
+    } 
+    // En cualquier otro caso, también redirige a agenda.php
+    else {
+        header("Location: agenda.php");
+        exit();
     }
+} 
+// Si no se ha enviado ningún formulario, inicializa el contador en 0
+else {
+    $_SESSION['contador'] = 0;
+}
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="es">
