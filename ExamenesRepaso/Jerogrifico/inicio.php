@@ -55,7 +55,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Inicio - Jeroglífico del Día</title>
 </head>
 <body>
-    <h1>Bienvenido, <?php echo htmlspecialchars($login); ?></h1>
+    <h2>Bienvenido, <?php 
+    echo $_SESSION['nombre'];?>!</h2>
+
     <?php if ($mensaje) echo "<p>$mensaje</p>"; ?>
 
     <form method="POST" action="">
