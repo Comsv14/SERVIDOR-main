@@ -72,7 +72,7 @@ $connection->close();
                 $imagen=htmlspecialchars($row['imagen']);
                 echo "<td>";
                 echo "<img src=$imagen>";
-                echo "<input type='radio'>['$imagen']</input>";
+                echo "<input type='radio' name='imagen'>['$imagen']</input>";
                 echo "</td>";
                 $imagen=htmlspecialchars($row['imagen']);
                 $cont++;
